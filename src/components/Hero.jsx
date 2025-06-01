@@ -143,17 +143,13 @@ const Hero = () => {
             {/* 💎 Gorgeous Blue-Gradient Aura */}
             <div className="absolute inset-0 -m-3 bg-gradient-to-r from-[#0a192f]/60 to-[#38bdf8]/60 rounded-3xl transform rotate-2 blur-xl opacity-70"></div>
 
-            {/* 🧊 Floating Image Container with Soft Shadows */}
+            {/* 🧊 Floating Image Only - Clean & Transparent */}
             <div className="relative w-full max-w-[400px] sm:max-w-[500px] lg:max-w-[600px]">
-              {/* Card holder with blueish gradient and shadow */}
-              <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-[#38bdf8]/30 to-[#0a3e8a]/40 shadow-lg blur-lg"></div>
-
-              {/* Image wrapper for white bg on hover with transition */}
               <div
-                className={`relative rounded-2xl transition-transform duration-500 hover:scale-105 hover:-rotate-2`}
+                className={`relative transition-transform duration-500 hover:scale-105 hover:-rotate-2`}
               >
                 <img
-                  className={`relative rounded-2xl bg-white p-4 shadow-md transition-opacity duration-500 ${
+                  className={`w-full rounded-2xl transition-opacity duration-500 ${
                     fadeImage ? "animate-imageFade" : "opacity-100"
                   }`}
                   src={images[currentWordIndex]}
