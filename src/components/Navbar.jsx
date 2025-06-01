@@ -1,10 +1,17 @@
 import { useState, useEffect, useRef } from "react";
 import { Link, animateScroll as scroll } from "react-scroll";
-import { SunIcon, MoonIcon, Bars3Icon, XMarkIcon } from "@heroicons/react/24/solid";
-
+import {
+  SunIcon,
+  MoonIcon,
+  Bars3Icon,
+  XMarkIcon,
+} from "@heroicons/react/24/solid";
+import logo from "../assets/CodeITDark.png"; // Adjust the path to your logo image
 const Navbar = () => {
   const [activeLink, setActiveLink] = useState("home");
-  const [theme, setTheme] = useState(sessionStorage.getItem("theme") || "white");
+  const [theme, setTheme] = useState(
+    sessionStorage.getItem("theme") || "white"
+  );
   const [scrolled, setScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const observerRef = useRef(null);
@@ -37,9 +44,12 @@ const Navbar = () => {
         entries.forEach((entry) => {
           const rect = entry.boundingClientRect;
           const viewportHeight = window.innerHeight - navbarHeight;
-          const visibleHeight = Math.min(rect.bottom - navbarHeight, viewportHeight) - Math.max(rect.top - navbarHeight, 0);
+          const visibleHeight =
+            Math.min(rect.bottom - navbarHeight, viewportHeight) -
+            Math.max(rect.top - navbarHeight, 0);
           const sectionHeight = rect.height;
-          const visibleRatio = sectionHeight > 0 ? visibleHeight / sectionHeight : 0;
+          const visibleRatio =
+            sectionHeight > 0 ? visibleHeight / sectionHeight : 0;
           if (visibleRatio > maxVisible.ratio) {
             maxVisible = { id: entry.target.id, ratio: visibleRatio };
           }
@@ -88,15 +98,29 @@ const Navbar = () => {
       <div className="container mx-auto flex justify-between items-center px-6 h-full">
         {/* Logo */}
         <div
-          className="text-2xl font-bold cursor-pointer uppercase bg-clip-text text-transparent bg-gradient-to-r from-accent to-teal-600"
+          className="text-2xl font-bold cursor-pointer bg-clip-text text-transparent bg-gradient-to-r from-sky-300 to-sky-200"
           onClick={() => {
             scroll.scrollToTop();
             setActiveLink("home");
             setIsMenuOpen(false);
           }}
         >
-          Nourex
+          CodeIT
         </div>
+        {/* <div
+          className="cursor-pointer"
+          onClick={() => {
+            scroll.scrollToTop();
+            setActiveLink("home");
+            setIsMenuOpen(false);
+          }}
+        >
+          <img
+            src={logo}
+            alt="CodeIT Logo"
+            className="h-35 lg:h-45 w-auto max-h-[190px] object-contain"
+          />
+        </div> */}
         {/* Desktop Nav Links */}
         <ul className="hidden lg:flex space-x-8">
           {["home", "about", "services", "portfolio", "contact"].map((item) => (
@@ -107,65 +131,83 @@ const Navbar = () => {
                 duration={500}
                 offset={-82}
                 className={`uppercase cursor-pointer transition-all duration-300 text-base font-medium ${
-                  activeLink === item ? "text-accent" : "text-text hover:text-accent"
+                  activeLink === item
+                    ? "text-sky-300"
+                    : "text-text hover:text-sky-400"
                 }`}
                 onClick={() => handleLinkClick(item)}
               >
                 {item}
                 {activeLink === item && (
-                  <span className="absolute bottom-0 left-0 w-full h-0.5 bg-accent scale-x-100 transform origin-left transition-transform duration-300"></span>
+                  <span className="absolute bottom-0 left-0 w-full h-0.5 bg-sky-300 scale-x-100 transform origin-left transition-transform duration-300"></span>
                 )}
               </Link>
             </li>
           ))}
         </ul>
         {/* Theme Toggle (Desktop) */}
-        <div className="hidden lg:flex items-center space-x-4">
+        {/* <div className="hidden lg:flex items-center space-x-4">
           <button
             onClick={toggleTheme}
             className="bg-accent text-primary p-2 rounded-full hover:bg-opacity-80 transition flex items-center"
           >
-            {theme === "white" ? <MoonIcon className="w-6 h-6" /> : <SunIcon className="w-6 h-6" />}
+            {theme === "white" ? (
+              <MoonIcon className="w-6 h-6" />
+            ) : (
+              <SunIcon className="w-6 h-6" />
+            )}
           </button>
-        </div>
+        </div> */}
         {/* Mobile Menu Button */}
         <button
-          className="lg:hidden p-2 text-text hover:text-accent"
+          className="lg:hidden p-2 text-text hover:text-sky-500"
           onClick={() => setIsMenuOpen(!isMenuOpen)}
         >
-          {isMenuOpen ? <XMarkIcon className="w-8 h-8" /> : <Bars3Icon className="w-8 h-8" />}
+          {isMenuOpen ? (
+            <XMarkIcon className="w-8 h-8" />
+          ) : (
+            <Bars3Icon className="w-8 h-8" />
+          )}
         </button>
       </div>
       {/* Mobile Menu */}
       {isMenuOpen && (
         <div className="lg:hidden bg-secondary shadow-lg">
           <ul className="flex flex-col items-center py-4 space-y-4">
-            {["home", "about", "services", "portfolio", "contact"].map((item) => (
-              <li key={item} className="relative">
-                <Link
-                  to={item}
-                  smooth={true}
-                  duration={500}
-                  offset={-82}
-                  className={`uppercase cursor-pointer transition-all duration-300 text-lg font-medium ${
-                    activeLink === item ? "text-accent" : "text-text hover:text-accent"
-                  }`}
-                  onClick={() => handleLinkClick(item)}
-                >
-                  {item}
-                  {activeLink === item && (
-                    <span className="absolute bottom-0 left-0 w-full h-0.5 bg-accent scale-x-100 transform origin-left transition-transform duration-300"></span>
-                  )}
-                </Link>
-              </li>
-            ))}
+            {["home", "about", "services", "portfolio", "contact"].map(
+              (item) => (
+                <li key={item} className="relative">
+                  <Link
+                    to={item}
+                    smooth={true}
+                    duration={500}
+                    offset={-82}
+                    className={`uppercase cursor-pointer transition-all duration-300 text-lg font-medium ${
+                      activeLink === item
+                        ? "text-sky-500"
+                        : "text-text hover:text-sky-400"
+                    }`}
+                    onClick={() => handleLinkClick(item)}
+                  >
+                    {item}
+                    {activeLink === item && (
+                      <span className="absolute bottom-0 left-0 w-full h-0.5 bg-accent scale-x-100 transform origin-left transition-transform duration-300"></span>
+                    )}
+                  </Link>
+                </li>
+              )
+            )}
             {/* Theme Toggle (Mobile) */}
-            <button
+            {/* <button
               onClick={toggleTheme}
               className="bg-accent text-primary p-2 rounded-full hover:bg-opacity-80 transition flex items-center"
             >
-              {theme === "white" ? <MoonIcon className="w-6 h-6" /> : <SunIcon className="w-6 h-6" />}
-            </button>
+              {theme === "white" ? (
+                <MoonIcon className="w-6 h-6" />
+              ) : (
+                <SunIcon className="w-6 h-6" />
+              )}
+            </button> */}
           </ul>
         </div>
       )}

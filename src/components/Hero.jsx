@@ -1,14 +1,18 @@
 import { Link } from "react-scroll";
 import { useState, useEffect } from "react";
-import img1 from "../assets/img2.jpg?format=webp&quality=80";
+import img1 from "../assets/some1.png?format=webp&quality=80";
+import img2 from "../assets/some2.png?format=webp&quality=80";
+import img3 from "../assets/some3.png?format=webp&quality=80";
 
 const Hero = () => {
-  const words = ["Web Development", "Mobile Apps", "Software Solutions", "UI/UX Design"];
+  const words = ["Smart Code.", "Scalable Solutions.", "Seamless Delivery."];
+  const images = [img1, img2, img3]; // Array of images corresponding to words
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
   const [currentText, setCurrentText] = useState("");
   const [isDeleting, setIsDeleting] = useState(false);
   const [typingSpeed, setTypingSpeed] = useState(150);
   const [shouldSlide, setShouldSlide] = useState(false);
+  const [fadeImage, setFadeImage] = useState(false); // State for fade animation
 
   // Handle image sliding based on text length and screen size
   useEffect(() => {
@@ -23,7 +27,7 @@ const Hero = () => {
     }
   }, [currentText]);
 
-  // Typing effect logic
+  // Typing effect logic and image fade trigger
   useEffect(() => {
     const handleTyping = () => {
       const fullWord = words[currentWordIndex];
@@ -39,7 +43,11 @@ const Hero = () => {
         setTimeout(() => setIsDeleting(true), 1000);
       } else if (isDeleting && currentText === "") {
         setIsDeleting(false);
-        setCurrentWordIndex((prev) => (prev + 1) % words.length);
+        setFadeImage(true); // Trigger fade animation before changing image
+        setTimeout(() => {
+          setCurrentWordIndex((prev) => (prev + 1) % words.length);
+          setFadeImage(false); // Reset fade after image change
+        }, 300); // Match fade-out duration
       }
     };
 
@@ -50,27 +58,31 @@ const Hero = () => {
   return (
     <section
       id="home"
-      className="relative pt-24 pb-16 bg-primary text-text sm:pt-28 sm:pb-20 lg:pt-32 lg:pb-24 xl:pt-36 xl:pb-28 overflow-hidden pt-navbar"
+      className="relative pt-24 pb-16 text-[#0a192f] sm:pt-28 sm:pb-20 lg:pt-32 lg:pb-24 xl:pt-36 xl:pb-28 overflow-hidden pt-navbar"
     >
-      {/* Background Gradient Overlay */}
-      <div className="absolute inset-0 bg-gradient-to-br from-accent/20 to-transparent pointer-events-none"></div>
+      {/* 🔥 Removed gradient background and overlay */}
+      <div className="px-4 mx-auto sm:px-6 lg:px-8 max-w-7xl"></div>
+      {/* 💎 Gorgeous Blue-Gradient Aura */}
+
       <div className="px-4 mx-auto sm:px-6 lg:px-8 max-w-7xl">
         <div className="grid items-center grid-cols-1 gap-y-12 lg:grid-cols-2 gap-x-16 mx-2 sm:mx-4">
           {/* Left Side */}
           <div className="font-poppins animate-fadeIn">
             <h1 className="text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl xl:text-7xl">
-              Build Your Future with Expert
+              Welcome to CodeIT Technologies
               <br />
-              <span className="inline-block min-h-[1.5em] w-[16ch] text-left bg-clip-text text-transparent bg-gradient-to-r from-accent to-teal-600 mt-8 mb-[-1.7rem]">
+              <span className="inline-block min-h-[1.5em] w-[16ch] text-left bg-clip-text text-transparent bg-gradient-to-r from-[#38bdf8] to-[#0a192f] mt-8 mb-[-1.7rem]">
                 {currentText}
                 <span className="animate-blink">|</span>
               </span>
             </h1>
             <p className="mt-6 text-lg font-normal leading-relaxed sm:mt-8 sm:text-xl max-w-lg">
-              At Nourex, we connect you with world-class freelancers to craft stunning websites, innovative mobile apps, and cutting-edge software solutions. Turn your vision into reality with talent that delivers.
+              At CodeIT, we guide your tech journey with clarity and purpose.
+              From AI fueled innovation to rock solid maintenance.We build
+              smarter, faster, and cleaner digital experiences that last.
             </p>
             <div className="mt-10 sm:mt-12 flex flex-col sm:flex-row gap-4">
-              <Link
+              {/* <Link
                 to="contact"
                 smooth={true}
                 duration={500}
@@ -78,25 +90,44 @@ const Hero = () => {
                 className="inline-flex items-center justify-center px-8 py-4 text-lg font-semibold uppercase transition-all duration-300 bg-accent text-primary rounded-full hover:bg-opacity-90 hover:scale-105 shadow-lg hover:shadow-xl cursor-pointer"
               >
                 Start Your Project
-              </Link>
+              </Link> */}
               <Link
                 to="portfolio"
                 smooth={true}
                 duration={500}
                 offset={-82}
-                className="inline-flex items-center justify-center px-8 py-4 text-lg font-semibold uppercase transition-all duration-300 border-2 border-accent text-accent rounded-full hover:bg-accent hover:text-primary hover:scale-105 shadow-lg hover:shadow-xl cursor-pointer"
+                className="inline-flex items-center justify-center px-8 py-4 text-lg font-semibold uppercase transition-all duration-300 border-2 border-blue-900 text-blue-900 rounded-full hover:bg-blue-900 hover:text-sky-400 hover:scale-105 shadow-lg hover:shadow-xl cursor-pointer"
               >
                 View Our Work
               </Link>
             </div>
             <div className="mt-8 sm:mt-10">
               <ul className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {["Fast Hiring", "Top Talent", "Custom Solutions", "Scalable Growth"].map((item) => (
+                {[
+                  "Faster Development",
+                  "AI-Powered Solutions",
+                  "Top Talent",
+                  "Exert Guidance",
+                  "Future-Ready Tech",
+                  "Scalable Growth",
+                ].map((item) => (
                   <li key={item} className="flex items-center">
-                    <svg className="w-6 h-6 text-accent mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
+                    <svg
+                      className="w-6 h-6 text-accent mr-3"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M5 13l4 4L19 7"
+                      />
                     </svg>
-                    <span className="text-lg font-medium text-text">{item}</span>
+                    <span className="text-lg font-medium text-secondary">
+                      {item}
+                    </span>
                   </li>
                 ))}
               </ul>
@@ -104,14 +135,31 @@ const Hero = () => {
           </div>
 
           {/* Right Side */}
-          <div className={`relative flex justify-center transition-all duration-500 ${shouldSlide ? "slide-right" : "slide-back"}`}>
-          <div className="absolute inset-0 -m-3 bg-gradient-to-r from-accent/40 to-teal-500/70 rounded-3xl transform rotate-3 blur-md"></div>
-          <div className="relative w-full max-w-[400px] sm:max-w-[500px] lg:max-w-[600px]">
-              <img
-                className="w-full rounded-2xl dark:shadow-dark-2xl shadow-2xl transition-all duration-500 hover:dark:shadow-dark-3xl hover:shadow-3xl hover:scale-105 hover:-rotate-3"
-                src={img1}
-                alt="Nourex freelancing illustration"
-              />
+          <div
+            className={`relative flex justify-center transition-all duration-500 ${
+              shouldSlide ? "slide-right" : "slide-back"
+            }`}
+          >
+            {/* 💎 Gorgeous Blue-Gradient Aura */}
+            <div className="absolute inset-0 -m-3 bg-gradient-to-r from-[#0a192f]/60 to-[#38bdf8]/60 rounded-3xl transform rotate-2 blur-xl opacity-70"></div>
+
+            {/* 🧊 Floating Image Container with Soft Shadows */}
+            <div className="relative w-full max-w-[400px] sm:max-w-[500px] lg:max-w-[600px]">
+              {/* Card holder with blueish gradient and shadow */}
+              <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-[#38bdf8]/30 to-[#0a3e8a]/40 shadow-lg blur-lg"></div>
+
+              {/* Image wrapper for white bg on hover with transition */}
+              <div
+                className={`relative rounded-2xl transition-transform duration-500 hover:scale-105 hover:-rotate-2`}
+              >
+                <img
+                  className={`relative rounded-2xl bg-white p-4 shadow-md transition-opacity duration-500 ${
+                    fadeImage ? "animate-imageFade" : "opacity-100"
+                  }`}
+                  src={images[currentWordIndex]}
+                  alt="CodeIT freelancing illustration"
+                />
+              </div>
             </div>
           </div>
         </div>

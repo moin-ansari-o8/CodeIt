@@ -4,20 +4,25 @@
 @tailwind components;
 @tailwind utilities;
 
+/* 🔷 Primary Theme Colors — Sky & Navy Vibes */
 :root {
-  --color-primary: #f8fafc;
-  --color-secondary: #e2e8f0;
-  --color-accent: #2dd4bf;
-  --color-text: #1e293b;
+  --color-primary: #0a192f;   /* Light Sky Blue */
+  --color-secondary: #1e293b; /* Soft Sky Blue */
+  --color-accent: #38bdf8  ;  /* Deep Navy */
+  --color-accent-light: #60a5fa; /* Blue */
+  --color-text: #f1f5f9;   /* Rich Navy Text */
 }
 
+/* 🌑 Dark Theme Variant */
 [data-theme="black"] {
-  --color-primary: #0f172a;
-  --color-secondary: #1e293b;
-  --color-accent: #2dd4bf;
-  --color-text: #f1f5f9;
+  --color-primary: #0a192f;        /* Deep Navy BG */
+  --color-secondary: #1e293b;      /* Darker Steel */
+  --color-accent: #38bdf8;         /* Sky Blue Accent */
+  --color-accent-light: #60a5fa;   /* Lighter Sky Gradient */
+  --color-text: #f1f5f9;           /* Near White */
 }
 
+/* 🎨 Fonts */
 @font-face {
   font-family: "AvantGarde";
   src: url("./assets/fonts/AvantGarde.ttf") format("truetype");
@@ -36,12 +41,16 @@ body {
   font-family: "Poppins", sans-serif;
 }
 
-/* ---------- Animations ---------- */
-
+/* 🌠 Animations */
+@keyframes imageFade {
+  0% { opacity: 1; }
+  50% { opacity: 0; }
+  100% { opacity: 1; }
+}
 @keyframes fadeIn {
   from {
     opacity: 0;
-    transform: translateY(20px);
+    transform: translateY(50px);
   }
   to {
     opacity: 1;
@@ -66,27 +75,28 @@ body {
   }
 }
 
-/* Slide right (triggered) */
 @keyframes slideRightAnimation {
   from {
     transform: translateX(0);
   }
   to {
-    transform: translateX(100px); /* Slide to the right */
+    transform: translateX(100px);
   }
 }
 
-/* Slide back to original */
 @keyframes slideBackAnimation {
   from {
     transform: translateX(100px);
   }
   to {
-    transform: translateX(0); /* Slide back to original position */
+    transform: translateX(0);
   }
 }
 
-/* ---------- Utilities ---------- */
+/* ⚙️ Utilities */
+.animate-imageFade {
+  animation: imageFade 0.6s ease-in-out;
+}
 
 .animate-fadeIn {
   animation: fadeIn 1s ease-out forwards;
@@ -100,7 +110,6 @@ body {
   animation: blink 1s infinite;
 }
 
-/* Apply sliding animations only on large screens */
 @media (min-width: 1024px) {
   .slide-right {
     animation: slideRightAnimation 0.5s ease forwards;
@@ -111,7 +120,6 @@ body {
   }
 }
 
-/* Disable sliding animations on smaller screens */
 @media (max-width: 1023px) {
   .slide-right,
   .slide-back {

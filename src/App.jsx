@@ -26,14 +26,22 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen bg-primary text-text">
+    <div
+      className="min-h-screen text-[#0a192f] bg-gradient-to-br from-[#f0f9ff] via-[#dbeafe] to-[#eff6ff] relative"
+      style={{
+        backgroundImage: `
+      radial-gradient(circle at top right, rgba(255, 255, 255, 0.7), transparent 70%),
+      linear-gradient(to bottom right, #f0f9ff, #dbeafe, #eff6ff)
+    `,
+      }}
+    >
       <Navbar />
       <main>
         <Hero />
         <About />
         <Services />
         <Portfolio />
-        <Testimonials/>
+        {/* <Testimonials/> */}
         <Contact />
       </main>
       <Footer />

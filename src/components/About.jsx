@@ -1,6 +1,10 @@
 import { Link } from "react-scroll";
 import { useEffect, useState } from "react";
-import { RocketLaunchIcon, UsersIcon, StarIcon } from "@heroicons/react/24/solid";
+import {
+  RocketLaunchIcon,
+  UsersIcon,
+  StarIcon,
+} from "@heroicons/react/24/solid";
 
 const About = () => {
   const [projects, setProjects] = useState(0);
@@ -44,10 +48,10 @@ const About = () => {
   return (
     <section
       id="about"
-      className="relative bg-primary text-text pt-navbar pb-12 overflow-hidden"
+      className="relative text-text pt-navbar pb-12 overflow-hidden"
     >
       {/* Background Gradient Overlay */}
-      <div className="absolute inset-0 bg-gradient-to-b from-accent/10 to-transparent pointer-events-none"></div>
+      <div className="absolute inset-0 pointer-events-none"></div>
       <div className="container mx-auto px-6">
         {/* Introduction */}
         <div className="text-center mb-16 animate-fadeIn">
@@ -55,7 +59,10 @@ const About = () => {
             Who We Are at Nourex
           </h2>
           <p className="mt-6 text-lg sm:text-xl max-w-3xl mx-auto leading-relaxed">
-            Nourex is your gateway to innovation, connecting you with elite freelancers who breathe life into your digital dreams. From bespoke websites to groundbreaking apps, we deliver solutions that inspire, engage, and succeed.
+            Nourex is your gateway to innovation, connecting you with elite
+            freelancers who breathe life into your digital dreams. From bespoke
+            websites to groundbreaking apps, we deliver solutions that inspire,
+            engage, and succeed.
           </p>
         </div>
         {/* Mission Statement */}
@@ -63,22 +70,30 @@ const About = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div className="p-6 bg-secondary rounded-lg shadow-md">
               <RocketLaunchIcon className="w-10 h-10 text-accent mb-4" />
-              <h3 className="text-2xl font-semibold text-text mb-2">Our Mission</h3>
+              <h3 className="text-2xl font-semibold text-text mb-2">
+                Our Mission
+              </h3>
               <p className="text-base">
-                To empower businesses and creators by providing seamless access to top-tier talent, crafting software solutions that push boundaries and drive growth.
+                To empower businesses and creators by providing seamless access
+                to top-tier talent, crafting software solutions that push
+                boundaries and drive growth.
               </p>
             </div>
             <div className="p-6 bg-secondary rounded-lg shadow-md">
               <UsersIcon className="w-10 h-10 text-accent mb-4" />
-              <h3 className="text-2xl font-semibold text-text mb-2">Our Team</h3>
+              <h3 className="text-2xl font-semibold text-text mb-2">
+                Our Team
+              </h3>
               <p className="text-base">
-                A global network of expert freelancers specializing in web development, mobile apps, UI/UX design, and more, united by a passion for excellence.
+                A global network of expert freelancers specializing in web
+                development, mobile apps, UI/UX design, and more, united by a
+                passion for excellence.
               </p>
             </div>
           </div>
         </div>
         {/* Stats Section */}
-        <div id="stats" className="mb-20">
+        {/* <div id="stats" className="mb-20">
           <h3 className="text-3xl font-semibold text-center text-text mb-12 animate-fadeIn">
             Our Impact
           </h3>
@@ -99,7 +114,7 @@ const About = () => {
               <p className="mt-2 text-lg">Years of Expertise</p>
             </div>
           </div>
-        </div>
+        </div> */}
         {/* Call to Action */}
         <div className="text-center animate-fadeIn">
           <h3 className="text-2xl font-semibold text-text mb-6">

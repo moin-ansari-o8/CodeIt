@@ -32,14 +32,12 @@ const Portfolio = () => {
     filter === "all" ? projects : projects.filter((p) => p.category === filter);
 
   return (
-    <section
-      id="portfolio"
-      className="min-h-screen bg-primary text-text pt-navbar pb-12"
-    >
+    <section id="portfolio" className="min-h-screen text-text pt-navbar pb-12">
       <div className="container mx-auto px-6">
         <h2 className="text-4xl font-bold text-center mb-8">Our Portfolio</h2>
         <p className="text-lg text-center max-w-3xl mx-auto mb-8">
-          Explore our recent projects showcasing expertise in web, mobile, and design.
+          Explore our recent projects showcasing expertise in web, mobile, and
+          design.
         </p>
         {/* Filters */}
         <div className="flex justify-center space-x-4 mb-8">

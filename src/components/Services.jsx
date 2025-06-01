@@ -42,10 +42,7 @@ const Services = () => {
   ];
 
   return (
-    <section
-      id="services"
-      className="min-h-screen bg-primary text-text pt-navbar pb-12"
-    >
+    <section id="services" className="min-h-screen text-text pt-navbar pb-12">
       <div className="container mx-auto px-6">
         <h2 className="text-4xl font-bold text-center mb-8">Our Services</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">

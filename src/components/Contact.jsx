@@ -19,10 +19,7 @@ const Contact = () => {
   };
 
   return (
-    <section
-      id="contact"
-      className="min-h-screen bg-primary text-text pt-navbar pb-12"
-    >
+    <section id="contact" className="min-h-screen text-text pt-navbar pb-12">
       <div className="container mx-auto px-6">
         <h2 className="text-4xl font-bold text-center mb-8">Contact Us</h2>
         {isSubmitted && (
@@ -73,7 +70,9 @@ const Contact = () => {
               aria-invalid={errors.email ? "true" : "false"}
             />
             {errors.email && (
-              <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>
+              <p className="text-red-500 text-sm mt-1">
+                {errors.email.message}
+              </p>
             )}
           </div>
           <div className="mb-4">
