@@ -141,7 +141,7 @@ const Hero = () => {
             }`}
           >
             {/* 💎 Gorgeous Blue-Gradient Aura */}
-            <div className="absolute inset-0 -m-3 bg-gradient-to-r from-[#0a192f]/60 to-[#38bdf8]/60 rounded-3xl transform rotate-2 blur-xl opacity-70"></div>
+            <div className="absolute inset-0 -m-3  rounded-3xl transform rotate-2 blur-xl opacity-70"></div>
 
             {/* 🧊 Floating Image Only - Clean & Transparent */}
             <div className="relative w-full max-w-[400px] sm:max-w-[500px] lg:max-w-[600px]">
