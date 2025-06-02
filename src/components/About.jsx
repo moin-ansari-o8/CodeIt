@@ -55,11 +55,11 @@ const About = () => {
       <div className="container mx-auto px-6">
         {/* Introduction */}
         <div className="text-center mb-16 animate-fadeIn">
-          <h2 className="text-4xl font-bold sm:text-5xl lg:text-6xl bg-clip-text text-transparent bg-gradient-to-r from-accent to-teal-600">
-            Who We Are at Nourex
+          <h2 className="text-4xl font-bold sm:text-5xl lg:text-6xl bg-clip-text text-transparent bg-gradient-to-r from-[#38bdf8] to-[#0a192f]">
+            Who We Are at CodeIT
           </h2>
           <p className="mt-6 text-lg sm:text-xl max-w-3xl mx-auto leading-relaxed">
-            Nourex is your gateway to innovation, connecting you with elite
+            CodeIT is your gateway to innovation, connecting you with elite
             freelancers who breathe life into your digital dreams. From bespoke
             websites to groundbreaking apps, we deliver solutions that inspire,
             engage, and succeed.

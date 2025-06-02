@@ -85,19 +85,19 @@ const Navbar = () => {
     setIsMenuOpen(false);
   };
 
-  const toggleTheme = () => {
-    setTheme((prevTheme) => (prevTheme === "white" ? "black" : "white"));
-  };
+  // const toggleTheme = () => {
+  //   setTheme((prevTheme) => (prevTheme === "white" ? "black" : "white"));
+  // };
 
   return (
     <nav
-      className={`fixed top-0 left-0 w-full bg-secondary text-text shadow-lg z-50 transition-all duration-300 ${
+      className={`fixed top-0 left-0 w-full bg-blue-200 text-text shadow-lg z-50 transition-all duration-300 ${
         scrolled ? "h-16" : "h-20"
       }`}
     >
       <div className="container mx-auto flex justify-between items-center px-6 h-full">
         {/* Logo */}
-        <div
+        {/* <div
           className="text-2xl font-bold cursor-pointer bg-clip-text text-transparent bg-gradient-to-r from-sky-300 to-sky-200"
           onClick={() => {
             scroll.scrollToTop();
@@ -106,9 +106,9 @@ const Navbar = () => {
           }}
         >
           CodeIT
-        </div>
-        {/* <div
-          className="cursor-pointer"
+        </div> */}
+        <div
+          className="cursor-pointer -ml-6"
           onClick={() => {
             scroll.scrollToTop();
             setActiveLink("home");
@@ -120,7 +120,7 @@ const Navbar = () => {
             alt="CodeIT Logo"
             className="h-35 lg:h-45 w-auto max-h-[190px] object-contain"
           />
-        </div> */}
+        </div>
         {/* Desktop Nav Links */}
         <ul className="hidden lg:flex space-x-8">
           {["home", "about", "services", "portfolio", "contact"].map((item) => (
@@ -132,14 +132,14 @@ const Navbar = () => {
                 offset={-82}
                 className={`uppercase cursor-pointer transition-all duration-300 text-base font-medium ${
                   activeLink === item
-                    ? "text-sky-300"
-                    : "text-text hover:text-sky-400"
+                    ? "text-sky-800"
+                    : "text-sky-600 hover:text-sky-800"
                 }`}
                 onClick={() => handleLinkClick(item)}
               >
                 {item}
                 {activeLink === item && (
-                  <span className="absolute bottom-0 left-0 w-full h-0.5 bg-sky-300 scale-x-100 transform origin-left transition-transform duration-300"></span>
+                  <span className="absolute bottom-0 left-0 w-full h-0.5 bg-sky-800 scale-x-100 transform origin-left transition-transform duration-300"></span>
                 )}
               </Link>
             </li>
