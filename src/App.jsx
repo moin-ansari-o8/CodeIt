@@ -22,7 +22,8 @@ function App() {
   }, []);
 
   const scrollToTop = () => {
-    scroll.scrollToTop();
+    // scroll.scrollToTop();
+    scroll.scrollTo(document.getElementById("about").offsetTop);
   };
 
   return (
