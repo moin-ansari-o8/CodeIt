@@ -68,7 +68,7 @@ const Hero = () => {
         <div className="grid items-center grid-cols-1 gap-y-12 lg:grid-cols-2 gap-x-16 mx-2 sm:mx-4">
           {/* Left Side */}
           <div className="font-poppins animate-fadeIn">
-            <h1 className="text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl xl:text-7xl">
+            <h1 className="text-4xl font-bold tracking-tight sm:text-5xl lg:text-5xl xl:text-6xl">
               Welcome to CodeIT Technologies
               <br />
               <span className="inline-block min-h-[1.5em] w-[16ch] text-left bg-clip-text text-transparent bg-gradient-to-r from-[#38bdf8] to-[#0a192f] mt-8 mb-[-1.7rem]">

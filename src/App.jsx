@@ -22,8 +22,8 @@ function App() {
   }, []);
 
   const scrollToTop = () => {
-    // scroll.scrollToTop();
-    scroll.scrollTo(document.getElementById("about").offsetTop);
+    scroll.scrollToTop();
+    // scroll.scrollTo(document.getElementById("about").offsetTop);
   };
 
   return (
@@ -49,7 +49,7 @@ function App() {
       {showBackToTop && (
         <button
           onClick={scrollToTop}
-          className="fixed bottom-6 right-6 bg-accent text-primary p-4 rounded-full shadow-lg hover:bg-opacity-80 transition-all duration-300"
+          className="fixed bottom-6 right-6 bg-sky-200 text-primary p-4 rounded-full shadow-lg transition-all duration-300 hover:bg-sky-300 hover:scale-110 hover:shadow-xl"
         >
           <ArrowUpIcon className="w-6 h-6" />
         </button>

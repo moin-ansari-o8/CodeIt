@@ -6,6 +6,7 @@ import {
   UsersIcon,
 } from "@heroicons/react/24/solid";
 import about_bg from "../assets/about_bg.png"; // Adjust the path to your background image
+
 const About = () => {
   const [activeRightTab, setActiveRightTab] = useState("mission");
 
@@ -19,19 +20,16 @@ const About = () => {
     mission:
       "To empower businesses and developers through intelligent, scalable, and future-ready software solutions built with passion, precision, and purpose.",
     glance:
-      "Codeit Technologies is where innovation meets execution. We specialize in building reliable, high-performance applications tailored to real-world needs. Whether it’s a startup idea or enterprise-grade architecture, we code it and deliver it without compromise.",
+      "CodeIt Technologies is where innovation meets execution. We specialize in building reliable, high-performance applications tailored to real-world needs. Whether it’s a startup idea or enterprise-grade architecture, we code it and deliver it without compromise.",
     team: "We’re a tight-knit team of developers, designers, and problem-solvers who believe in clean code and clear results. With diverse backgrounds in software engineering, DevOps, UI/UX, and AI-driven development, we combine technical excellence with creative thinking to deliver modern solutions that scale with your vision.",
   };
 
   return (
-    <section
-      id="about"
-      className="relative pt-navbar pb-12 text-[#0a192f] overflow-hidden"
-    >
-      <div className="container mx-auto px-6 ">
+    <section id="about" className="relative text-[#0a192f] overflow-hidden">
+      <div className="container mx-auto px-6">
         {/* Whole left+right container bg */}
         <div
-          className="relative mb-20 p-10 shadow-lg rounded-xl bg-cover bg-center bg-fixed"
+          className="relative p-10 shadow-lg rounded-xl bg-cover bg-center bg-fixed"
           style={{ backgroundImage: `url(${about_bg})` }}
         >
           {/* Overlay Blur - only for BG */}
@@ -45,7 +43,7 @@ const About = () => {
                 <div className="inline-block text-center">
                   <h2 className="text-4xl font-bold sm:text-5xl lg:text-5xl">
                     <span className="inline-block bg-clip-text text-transparent bg-sky-900">
-                      Who We Are at CodeIT
+                      Who We Are at CodeIt
                     </span>
                   </h2>
 
@@ -57,7 +55,7 @@ const About = () => {
               </div>
               <div className="mt-14 relative px-10 py-6 rounded-lg border-l-[5px] border-sky-900 text-[#cbd5e1] max-w-3xl mx-auto">
                 <p className="text-lg sm:text-xl max-w-lg mx-auto leading-relaxed text-[#0a192f]">
-                  CodeIT Technologies bridges the gap between vision and
+                  CodeIt Technologies bridges the gap between vision and
                   reality, delivering cutting-edge software solutions with a
                   team of elite innovators. Discover our story.
                 </p>
