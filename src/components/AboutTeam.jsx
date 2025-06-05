@@ -1,18 +1,19 @@
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay } from "swiper/modules";
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import { motion } from "framer-motion";
 import "swiper/css";
 import "swiper/css/effect-coverflow";
 import "swiper/css/autoplay";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
-import SwiperCore from "swiper";
+
 import zoro from "../assets/team/zoro.png";
 import sanji from "../assets/team/sanji.png";
 import nami from "../assets/team/nami.png";
 import luffy from "../assets/team/luffy.png";
 import chopper from "../assets/team/chopper.png";
+
 const AboutTeam = () => {
   const swiperRef = useRef(null);
 
@@ -62,12 +63,17 @@ const AboutTeam = () => {
   };
 
   return (
-    <div className="w-full py-10 px-4">
+    <div className="w-full py-10 px-2 sm:px-4">
       <Swiper
         ref={swiperRef}
         modules={[Autoplay]}
         spaceBetween={10}
-        slidesPerView={3}
+        slidesPerView={1}
+        breakpoints={{
+          640: { slidesPerView: 1 },
+          768: { slidesPerView: 2 },
+          1024: { slidesPerView: 3 },
+        }}
         centeredSlides={true}
         loop={true}
         autoplay={{ delay: 5000, disableOnInteraction: false }}
@@ -81,30 +87,34 @@ const AboutTeam = () => {
                   if (isPrev) handleHover(0);
                   if (isNext) handleHover(2);
                 }}
-                className={`transition-all duration-500 ease-in-out transform flex flex-col items-center justify-between p-6 rounded-2xl shadow-xl bg-white mx-auto mb-10 ${
-                  isActive ? "scale-100" : "scale-75 opacity-70"
+                className={`transition-all duration-500 ease-in-out transform flex flex-col items-center justify-between p-4 sm:p-6 rounded-2xl shadow-xl bg-white mx-auto mb-10 ${
+                  isActive ? "scale-100" : "scale-90 opacity-70"
                 }`}
-                style={{ width: 460, height: 500 }}
+                style={{
+                  width: "90%",
+                  maxWidth: 460,
+                  height: 480,
+                }}
               >
                 <div className="h-[40%] flex items-center justify-center">
-                  <img
+                  <motion.img
                     src={member.image}
                     alt={member.name}
-                    className="w-48 h-48 object-cover rounded-full mb-4"
+                    className="w-36 h-36 sm:w-48 sm:h-48 object-cover rounded-full mb-4"
                     whileHover={{ scale: 1.05 }}
                     transition={{ duration: 0.1 }}
                   />
                 </div>
-                <div className="h-[10%] text-xl font-semibold text-center mb-0">
+                <div className="h-[10%] text-lg sm:text-xl font-semibold text-center">
                   {member.name}
                 </div>
-                <div className="h-[10%] text-base text-gray-600 text-center">
+                <div className="h-[10%] text-sm sm:text-base text-gray-600 text-center">
                   {member.role}
                 </div>
                 <div className="h-[10%] w-full">
                   <hr className="border-t border-gray-300 w-2/3 mx-auto" />
                 </div>
-                <div className="h-[30%] text-base text-center px-6 text-gray-700 overflow-hidden">
+                <div className="h-[30%] text-sm sm:text-base text-center px-4 text-gray-700 overflow-hidden">
                   {member.intro}
                 </div>
               </motion.div>

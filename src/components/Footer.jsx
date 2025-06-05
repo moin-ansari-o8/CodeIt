@@ -15,6 +15,11 @@ const Footer = () => {
           {/* About Section */}
           <div>
             <h3 className="text-2xl font-bold mb-4">CodeIt</h3>
+            {/* <img
+              src={logo}
+              alt="CodeIt Logo"
+              className="mx-auto w-48 sm:w-56 md:w-64 lg:w-72 xl:w-80 transition-transform duration-500 hover:scale-105"
+            /> */}
             <p className="text-sm leading-relaxed text-sky-700">
               Empowering global innovation by connecting you with top-tier
               freelancers who turn ideas into impact.
