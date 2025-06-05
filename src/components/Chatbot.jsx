@@ -125,11 +125,9 @@ const Chatbot = () => {
       setIsOpen(true);
       setIsExpanded(true);
       let newSessionId = sessionId;
-      let isNewSession = false;
 
       if (!newSessionId) {
         newSessionId = uuidv4();
-        isNewSession = true;
         setSessionId(newSessionId);
         localStorage.setItem("chatbotSessionId", newSessionId);
       }
@@ -137,18 +135,12 @@ const Chatbot = () => {
       setTimeout(() => {
         inputRef.current?.focus();
       }, 100);
-
-      if (isNewSession) {
-        setIsLoading(true);
-        sendMessage({ event: "WELCOME" }, newSessionId);
-      }
     } else {
       setIsOpen(false);
       setShowButton(true);
       setTimeout(() => setIsExpanded(false), 300);
     }
   };
-
   // Send message to server
   const sendMessage = async (text, msgSessionId = sessionId) => {
     setIsLoading(true);
