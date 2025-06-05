@@ -5,6 +5,7 @@ import {
   FaLinkedinIn,
   FaInstagram,
 } from "react-icons/fa6";
+import logo from "../assets/CodeITDark.png"; // Adjust the path to your logo image
 
 const Footer = () => {
   return (

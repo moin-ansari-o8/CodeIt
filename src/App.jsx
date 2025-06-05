@@ -6,9 +6,9 @@ import Services from "./components/Services";
 import Portfolio from "./components/Portfolio";
 import Contact from "./components/Contact";
 import Footer from "./components/Footer";
+import AboutTeam from "./components/AboutTeam";
 import { ArrowUpIcon } from "@heroicons/react/24/solid";
 import { animateScroll as scroll } from "react-scroll";
-import Testimonials from "./components/Testimonials";
 
 function App() {
   const [showBackToTop, setShowBackToTop] = useState(false);
@@ -41,9 +41,9 @@ function App() {
         <Hero />
         <About />
         <Services />
-        <Portfolio />
-        {/* <Testimonials/> */}
-        <Contact />
+        {/* <Portfolio /> */}
+        <AboutTeam />
+        {/* <Contact /> */}
       </main>
       <Footer />
       {showBackToTop && (
