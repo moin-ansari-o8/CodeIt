@@ -1,5 +1,8 @@
 import { useEffect, useState, useRef } from "react";
-import { PaperAirplaneIcon } from "@heroicons/react/24/solid";
+import {
+  PaperAirplaneIcon,
+  ChatBubbleLeftRightIcon,
+} from "@heroicons/react/24/solid";
 
 const Chatbot = () => {
   const [isOpen, setIsOpen] = useState(false); // Chatbox open/close
@@ -73,13 +76,17 @@ const Chatbot = () => {
           onMouseLeave={() => {
             if (!isOpen) setIsExpanded(false);
           }}
-          className={`fixed bottom-24 right-0 bg-sky-200 text-primary py-2 px-3 ${
-            isExpanded ? "w-44" : "w-12"
-          } overflow-hidden whitespace-nowrap rounded-l-lg shadow-lg z-50 transition-all duration-500 ease-in-out hover:bg-sky-300 hover:scale-105 hover:shadow-xl flex items-center gap-2`}
+          className={`fixed bottom-24 right-0 bg-sky-200 text-primary py-2 px-3 
+      ${isExpanded ? "w-44" : "w-12"} 
+      h-12 overflow-hidden whitespace-nowrap rounded-l-lg shadow-lg z-50 
+      transition-all duration-500 ease-in-out hover:bg-sky-300 hover:scale-105 
+      hover:shadow-xl flex items-center`}
         >
-          💬
+          <div className="min-w-[1.5rem] flex justify-center">
+            <ChatBubbleLeftRightIcon className="w-7 h-7 text-sky-700 shrink-1" />
+          </div>
           <span
-            className={`transition-opacity duration-300 ${
+            className={`ml-2 transition-opacity duration-300 ${
               isExpanded ? "opacity-100" : "opacity-0"
             }`}
           >
@@ -130,7 +137,7 @@ const Chatbot = () => {
               className="bg-sky-600 hover:bg-sky-700 text-white p-3 rounded-lg transition"
               aria-label="Send message"
             >
-              <PaperAirplaneIcon className="w-6 h-6 rotate-90" />
+              <PaperAirplaneIcon className="w-6 h-6 rotate-0" />
             </button>
           </form>
         </div>
