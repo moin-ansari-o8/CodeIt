@@ -236,10 +236,16 @@ const Chatbot = () => {
       {isOpen && (
         <div
           ref={resizeRef}
-          className={`fixed bottom-24 right-0 bg-white shadow-2xl z-50 overflow-hidden flex flex-col transition-all duration-300 ease-in-out transform ${
-            isOpen ? "scale-100 opacity-100" : "scale-95 opacity-0"
-          }`}
+          className={`fixed bottom-24 right-0 bg-white shadow-2xl z-50 overflow-hidden flex flex-col
+    transform transition-all duration-900 ease-in-out
+    ${
+      isOpen
+        ? "opacity-100 scale-100 translate-y-0"
+        : "opacity-0 scale-75 translate-y-12 pointer-events-none"
+    }
+  `}
           style={{
+            willChange: "transform, opacity",
             width: `${dimensions.width}px`,
             height: `${dimensions.height}px`,
             minWidth: "300px",

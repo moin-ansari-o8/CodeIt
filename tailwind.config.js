@@ -12,6 +12,15 @@ export default {
           "100%": { opacity: 1, transform: "scale(1) translateY(0)" },
         },
       },
+      transitionProperty: {
+        height: "height",
+      },
+      translate: {
+        12: "3rem",
+      },
+      scale: {
+        75: ".75",
+      },
       colors: {
         primary: {
           DEFAULT: "var(--color-primary)", // Dynamic via CSS variables
