@@ -145,7 +145,7 @@ const Chatbot = () => {
     } else {
       setIsOpen(false);
       setShowButton(true);
-      setTimeout(() => setIsExpanded(true), 300); // Reset for next open
+      setTimeout(() => setIsExpanded(false), 300);
     }
   };
 
@@ -214,14 +214,14 @@ const Chatbot = () => {
           onMouseLeave={() => {
             if (!isOpen) setIsExpanded(false);
           }}
-          className={`fixed bottom-24 right-4 bg-blue-500 text-white py-2 px-3 
-          ${isExpanded ? "w-32" : "w-12"} 
-          h-12 rounded-l-lg overflow-hidden whitespace-nowrap shadow-lg z-50 
-          transition-all duration-300 ease-in-out hover:bg-blue-600 hover:scale-105 
-          flex items-center`}
+          className={`fixed bottom-24 right-0 bg-sky-200 text-primary py-2 px-3 
+      ${isExpanded ? "w-44" : "w-12"} 
+      h-12 overflow-hidden whitespace-nowrap rounded-l-lg shadow-lg z-50 
+      transition-all duration-500 ease-in-out hover:bg-sky-300 hover:scale-105 
+      hover:shadow-xl flex items-center`}
         >
           <div className="min-w-[1.5rem] flex justify-center">
-            <ChatBubbleLeftRightIcon className="w-6 h-6 text-white" />
+            <ChatBubbleLeftRightIcon className="w-7 h-7 text-sky-700 shrink-1" />
           </div>
           <span
             className={`ml-2 transition-opacity duration-300 ${
@@ -232,7 +232,6 @@ const Chatbot = () => {
           </span>
         </button>
       )}
-
       {/* Chat Box */}
       {isOpen && (
         <div
@@ -251,30 +250,35 @@ const Chatbot = () => {
         >
           {/* Resize Handles */}
           <div
-            className="absolute top-0 left-0 right-0 h-2 cursor-ns-resize hover:bg-blue-100"
+            className={`absolute top-0 left-0 right-0 h-2 cursor-ns-resize
+            }`}
             onMouseDown={startResize("top")}
           />
           <div
-            className="absolute top-0 left-0 w-4 h-4 cursor-nwse-resize hover:bg-blue-100"
+            className={`absolute top-0 left-0 w-4 h-4 cursor-nwse-resize
+            }`}
             onMouseDown={startResize("top-left")}
           />
           <div
-            className="absolute top-0 bottom-0 left-0 w-2 cursor-ew-resize hover:bg-blue-100"
+            className={`absolute top-0 bottom-0 left-0 w-2 cursor-ew-resize 
+            }`}
             onMouseDown={startResize("left")}
           />
           <div
-            className="absolute bottom-0 left-0 w-4 h-4 cursor-nesw-resize hover:bg-blue-100"
+            className={`absolute bottom-0 left-0 w-4 h-4 cursor-nesw-resize
+            }`}
             onMouseDown={startResize("bottom-left")}
           />
           <div
-            className="absolute bottom-0 left-0 right-0 h-2 cursor-ns-resize hover:bg-blue-100"
+            className={`absolute bottom-0 left-0 right-0 h-2 cursor-ns-resize
+            }`}
             onMouseDown={startResize("bottom")}
           />
 
           <div ref={containerRef} className="flex flex-col h-full">
             {/* Header */}
-            <div className="bg-blue-600 text-white px-5 py-4 font-semibold flex justify-between items-center">
-              Codeit Chatbot 🤖
+            <div className="bg-sky-700 text-white px-5 py-4 font-semibold flex justify-between items-center">
+              CodeIt Chatbot 🤖
               <button
                 onClick={toggleChat}
                 className="text-white text-2xl leading-none hover:text-red-300 transition"
@@ -287,8 +291,19 @@ const Chatbot = () => {
             {/* Messages Area */}
             <div
               ref={messagesContainerRef}
-              className="p-4 text-gray-800 flex-grow overflow-y-auto border-b border-gray-200 text-sm"
+              className="p-4 text-gray-800 flex-grow overflow-y-auto border-b border-sky-100 text-sm"
             >
+              {messages.length === 0 && !isLoading && (
+                <div className="flex flex-col items-center justify-center h-full text-center text-gray-600  rounded-lg p-6">
+                  <p className="text-lg font-semibold mb-2">
+                    Welcome to CodeIt! 🌟
+                  </p>
+                  <p className="text-sm whitespace-pre-wrap">
+                    I am your guide through this! 💻{"\n"}Start chatting to
+                    explore our services or get in touch! 😊
+                  </p>
+                </div>
+              )}
               {messages.map((msg, index) => (
                 <div
                   key={index}
@@ -299,8 +314,8 @@ const Chatbot = () => {
                   <p
                     className={`inline-block px-4 py-2 rounded-lg ${
                       msg.sender === "user"
-                        ? "bg-blue-100 text-blue-800"
-                        : "bg-gray-100 text-gray-800"
+                        ? "bg-sky-300 text-sky-900"
+                        : "bg-sky-100 text-sky-800"
                     } max-w-[80%] whitespace-pre-wrap`}
                   >
                     {msg.text}
@@ -309,11 +324,11 @@ const Chatbot = () => {
               ))}
               {isLoading && (
                 <div className="text-left mb-3">
-                  <div className="inline-block px-4 py-2 rounded-lg bg-gray-100">
+                  <div className="inline-block px-4 py-2 rounded-lg bg-sky-50">
                     <div className="flex gap-1 items-center justify-start h-5">
-                      <span className="w-2 h-2 bg-blue-500 rounded-full animate-bounce delay-0"></span>
-                      <span className="w-2 h-2 bg-blue-500 rounded-full animate-bounce delay-150"></span>
-                      <span className="w-2 h-2 bg-blue-500 rounded-full animate-bounce delay-300"></span>
+                      <span className="w-2 h-2 bg-sky-500 rounded-full animate-bounce delay-0"></span>
+                      <span className="w-2 h-2 bg-sky-500 rounded-full animate-bounce delay-150"></span>
+                      <span className="w-2 h-2 bg-sky-500 rounded-full animate-bounce delay-300"></span>
                     </div>
                   </div>
                 </div>
@@ -323,7 +338,7 @@ const Chatbot = () => {
             {/* Input */}
             <form
               onSubmit={handleSendMessage}
-              className="flex items-center gap-2 p-3 border-t border-gray-200 shrink-0"
+              className="flex items-center gap-2 p-3 border-t border-sky-100 shrink-0"
             >
               <div className="relative flex-grow">
                 <input
@@ -332,14 +347,14 @@ const Chatbot = () => {
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
                   placeholder="Type your message..."
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg text-sm outline-none focus:ring-2 focus:ring-blue-500 pr-8"
+                  className="w-full px-4 py-2 border border-sky-200 rounded-lg text-sm outline-none focus:ring-2 focus:ring-sky-500 pr-8"
                   disabled={isLoading}
                 />
                 {message && (
                   <button
                     type="button"
                     onClick={clearInput}
-                    className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                    className="absolute right-2 top-1/2 transform -translate-y-1/2 text-sky-400 hover:text-sky-600"
                     aria-label="Clear input"
                   >
                     <XMarkIcon className="w-5 h-5" />
@@ -349,7 +364,7 @@ const Chatbot = () => {
               <div className="relative">
                 <button
                   type="submit"
-                  className="bg-blue-600 hover:bg-blue-700 text-white p-2 rounded-lg transition relative"
+                  className="bg-sky-600 hover:bg-sky-700 text-white p-2 rounded-lg transition relative"
                   aria-label="Send message"
                   disabled={isLoading}
                 >
@@ -361,7 +376,7 @@ const Chatbot = () => {
                 <button
                   type="button"
                   onClick={clearChat}
-                  className="bg-blue-600 hover:bg-blue-700 text-white p-2 rounded-lg transition relative"
+                  className="bg-sky-600 hover:bg-sky-700 text-white p-2 rounded-lg transition relative"
                   aria-label="Clear chat"
                   disabled={isLoading}
                 >
