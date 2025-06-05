@@ -63,7 +63,7 @@ const AboutTeam = () => {
   };
 
   return (
-    <div className="w-full py-10 px-2 sm:px-4">
+    <div id="team" className="w-full py-10 px-2 sm:px-4">
       <Swiper
         ref={swiperRef}
         modules={[Autoplay]}
@@ -76,7 +76,8 @@ const AboutTeam = () => {
         }}
         centeredSlides={true}
         loop={true}
-        autoplay={{ delay: 5000, disableOnInteraction: false }}
+        autoplay={{ delay: 3000, disableOnInteraction: false }}
+        speed={1100}
         className="w-full"
       >
         {team.map((member, index) => (
@@ -88,11 +89,13 @@ const AboutTeam = () => {
                   if (isNext) handleHover(2);
                 }}
                 className={`transition-all duration-500 ease-in-out transform flex flex-col items-center justify-between p-4 sm:p-6 rounded-2xl shadow-xl bg-white mx-auto mb-10 ${
-                  isActive ? "scale-100" : "scale-90 opacity-70"
+                  isActive
+                    ? "scale-100 opacity-100 z-10"
+                    : "scale-75 sm:scale-80 opacity-30 blur-[1px] z-0"
                 }`}
                 style={{
                   width: "90%",
-                  maxWidth: 460,
+                  maxWidth: 480,
                   height: 480,
                 }}
               >
