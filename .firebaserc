@@ -1,0 +1,8 @@
+{
+  "projects": {
+    "default": "chat-bot01-codeit",
+    "codit": "chat-bot01-codeit"
+  },
+  "targets": {},
+  "etags": {}
+}

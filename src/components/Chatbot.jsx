@@ -3,28 +3,31 @@ import {
   PaperAirplaneIcon,
   ChatBubbleLeftRightIcon,
 } from "@heroicons/react/24/solid";
+import { v4 as uuidv4 } from "uuid";
 
 const Chatbot = () => {
-  const [isOpen, setIsOpen] = useState(false); // Chatbox open/close
-  const [message, setMessage] = useState(""); // Input message
-  const [isExpanded, setIsExpanded] = useState(true); // Button expand/collapse
-  const [showButton, setShowButton] = useState(true); // Show/hide button on click
+  const [isOpen, setIsOpen] = useState(false);
+  const [message, setMessage] = useState("");
+  const [isExpanded, setIsExpanded] = useState(true);
+  const [showButton, setShowButton] = useState(true);
+  const [messages, setMessages] = useState([]);
+  const [sessionId, setSessionId] = useState(null);
   const containerRef = useRef(null);
+  const messagesContainerRef = useRef(null);
 
-  // Auto collapse button after 2s on load
+  // Auto-collapse button after 2s
   useEffect(() => {
     const timer = setTimeout(() => setIsExpanded(false), 2000);
     return () => clearTimeout(timer);
   }, []);
 
-  // Click outside handler to close chat and show button again
+  // Close chatbox on outside click
   useEffect(() => {
     function handleClickOutside(event) {
       if (
         containerRef.current &&
         !containerRef.current.contains(event.target)
       ) {
-        // Close chatbox, show button, collapse button
         if (isOpen) {
           setIsOpen(false);
           setShowButton(true);
@@ -32,36 +35,63 @@ const Chatbot = () => {
         }
       }
     }
-
     if (isOpen) {
       document.addEventListener("mousedown", handleClickOutside);
     } else {
       document.removeEventListener("mousedown", handleClickOutside);
     }
-
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [isOpen]);
 
-  // Toggle chat open/close and hide/show button accordingly
+  // Scroll to the latest message
+  useEffect(() => {
+    if (messagesContainerRef.current) {
+      messagesContainerRef.current.scrollTop =
+        messagesContainerRef.current.scrollHeight;
+    }
+  }, [messages]);
+
+  // Toggle chat and send welcome message on open
   const toggleChat = () => {
     if (!isOpen) {
-      // Opening chat: hide button, open chat, expand button state
       setShowButton(false);
       setIsOpen(true);
       setIsExpanded(true);
+      const newSessionId = uuidv4();
+      setSessionId(newSessionId);
+      sendMessage({ event: "WELCOME" }, newSessionId);
     } else {
-      // Closing chat: close chat, show button, collapse after short delay
       setIsOpen(false);
       setShowButton(true);
-      // Collapse button after reappears
       setTimeout(() => setIsExpanded(false), 100);
     }
   };
 
-  const sendMessage = (e) => {
+  // Send message or event to backend
+  const sendMessage = async (textOrEvent, sessId = sessionId) => {
+    const isEvent = typeof textOrEvent === "object";
+    const payload = isEvent
+      ? { event: textOrEvent.event, sessionId: sessId }
+      : { text: textOrEvent, sessionId: sessId };
+    try {
+      const response = await fetch("/api/chatbotProxy", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      const data = await response.json();
+      setMessages((prev) => [...prev, { text: data.response, sender: "bot" }]);
+    } catch (error) {
+      console.error("Error sending message:", error);
+    }
+  };
+
+  // Handle user message submission
+  const handleSendMessage = async (e) => {
     e.preventDefault();
     if (message.trim()) {
-      alert(`🧠 Chatbot says: "You said - ${message}"`);
+      setMessages((prev) => [...prev, { text: message, sender: "user" }]);
+      await sendMessage(message);
       setMessage("");
     }
   };
@@ -77,10 +107,10 @@ const Chatbot = () => {
             if (!isOpen) setIsExpanded(false);
           }}
           className={`fixed bottom-24 right-0 bg-sky-200 text-primary py-2 px-3 
-      ${isExpanded ? "w-44" : "w-12"} 
-      h-12 overflow-hidden whitespace-nowrap rounded-l-lg shadow-lg z-50 
-      transition-all duration-500 ease-in-out hover:bg-sky-300 hover:scale-105 
-      hover:shadow-xl flex items-center`}
+          ${isExpanded ? "w-44" : "w-12"} 
+          h-12 overflow-hidden whitespace-nowrap rounded-l-lg shadow-lg z-50 
+          transition-all duration-500 ease-in-out hover:bg-sky-300 hover:scale-105 
+          hover:shadow-xl flex items-center`}
         >
           <div className="min-w-[1.5rem] flex justify-center">
             <ChatBubbleLeftRightIcon className="w-7 h-7 text-sky-700 shrink-1" />
@@ -110,19 +140,36 @@ const Chatbot = () => {
               className="text-white text-3xl leading-none hover:text-red-300 transition"
               aria-label="Close chat"
             >
-              &times;
+              ×
             </button>
           </div>
 
           {/* Messages Area */}
-          <div className="p-5 text-gray-700 flex-grow overflow-y-auto border-b border-gray-200 text-sm">
-            <p className="mb-3">👋 Hi there! How can I help you today?</p>
-            {/* Future: chat messages map here */}
+          <div
+            ref={messagesContainerRef}
+            className="p-5 text-gray-700 flex-grow overflow-y-auto border-b border-gray-200 text-sm"
+          >
+            {messages.map((msg, index) => (
+              <div
+                key={index}
+                className={`mb-3 ${
+                  msg.sender === "user" ? "text-right" : "text-left"
+                }`}
+              >
+                <p
+                  className={`inline-block px-4 py-2 rounded-lg ${
+                    msg.sender === "user" ? "bg-sky-100" : "bg-gray-100"
+                  }`}
+                >
+                  {msg.text}
+                </p>
+              </div>
+            ))}
           </div>
 
           {/* Input */}
           <form
-            onSubmit={sendMessage}
+            onSubmit={handleSendMessage}
             className="flex items-center gap-3 p-4 border-t border-gray-200"
           >
             <input
