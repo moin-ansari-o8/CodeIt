@@ -1,6 +1,6 @@
 import { CohereClient } from "cohere-ai";
 
-// Initialize Cohere with your API key (loaded from .env.local via Vite)
+// Initialize Cohere with your API key
 const cohere = new CohereClient({
   token: import.meta.env.VITE_COHERE_API_KEY,
 });
@@ -9,7 +9,6 @@ const cohere = new CohereClient({
 const sessions = {};
 
 export async function handleCohereRequest({ message, sessionId }) {
-  // Log for debugging
   console.log("Calling Cohere with message:", message);
   console.log(
     "Cohere token:",
@@ -21,7 +20,7 @@ export async function handleCohereRequest({ message, sessionId }) {
     sessions[sessionId] = { state: "idle", data: {} };
     return {
       response:
-        "Hi there! 👋 Welcome to Codeit. I’m here to help you explore our services, answer questions, or get in touch with the team.",
+        "Hello! 👋 Welcome to Codeit’s chatbot. I can help you explore our awesome services, get contact info, or start a project. What’s on your mind? 😊",
     };
   }
 
@@ -34,7 +33,7 @@ export async function handleCohereRequest({ message, sessionId }) {
     if (/services|what do you offer/i.test(msg)) {
       return {
         response:
-          "We offer the following services:\n💻 Web Development\n📱 Mobile App Development\n🎨 UI/UX Design\n☁️ Cloud Solutions\n🚀 Digital Marketing\n🤖 AI & Machine Learning",
+          "Here’s what we offer at Codeit:\n💻 Web Development: Custom websites & e-commerce\n📱 Mobile Apps: iOS & Android solutions\n🎨 UI/UX Design: User-friendly interfaces\n☁️ Cloud Solutions: Scalable infrastructure\n🚀 Digital Marketing: SEO & social media\n🤖 AI & ML: Smart automation\nWhat interests you? 😄",
       };
     }
     // Lead Generation Flow
@@ -42,7 +41,7 @@ export async function handleCohereRequest({ message, sessionId }) {
       session.state = "lead_name";
       return {
         response:
-          "Want to start a project with us? Let’s get a few details so our team can reach out. What’s your name?",
+          "Excited to kick off a project? 🚀 Please share your name to get started!",
       };
     }
     // Schedule a Meeting
@@ -50,45 +49,45 @@ export async function handleCohereRequest({ message, sessionId }) {
       session.state = "schedule_date";
       return {
         response:
-          "Would you like to book a free 15-minute consultation? When would you like the meeting?",
+          "Let’s set up a free 15-minute consultation! 📅 When’s a good day for you?",
       };
     }
     // Social & Contact Integration
     else if (/contact|reach out|phone|email|whatsapp|linkedin/i.test(msg)) {
       return {
         response:
-          "You can reach us via:\n📞 Phone: +123-456-7890\n📧 Email: contact@codeit.com\n💬 WhatsApp: +123-456-7890\n🔗 LinkedIn: linkedin.com/company/codeit",
+          "Get in touch with us! 📲\n📞 Phone: +123-456-7890\n📧 Email: contact@codeit.com\n💬 WhatsApp: +123-456-7890\n🔗 LinkedIn: linkedin.com/company/codeit\nWe’re here to help! 😊",
       };
     }
     // Smart FAQs
     else if (/how long does a project take/i.test(msg)) {
       return {
         response:
-          "Project timelines vary by complexity. A typical web development project takes 4-12 weeks.",
+          "Project timelines depend on scope. A typical web project takes 4-12 weeks. 📅 Want specifics for your idea?",
       };
     } else if (/do you work with startups/i.test(msg)) {
       return {
         response:
-          "Yes, we love startups! We offer tailored solutions to help you grow.",
+          "Absolutely, we ❤️ startups! We offer flexible solutions to fuel your growth. What’s your startup about?",
       };
     } else if (/what industries/i.test(msg)) {
       return {
         response:
-          "We specialize in tech, healthcare, e-commerce, and more. What’s your industry?",
+          "We work across tech, healthcare, e-commerce, and more. 🏥🛒 What’s your industry?",
       };
     }
     // Fun Easter Eggs
     else if (/tell me a joke|tech joke/i.test(msg)) {
       const jokes = [
-        "Why do programmers prefer dark mode? Because light attracts bugs!",
-        "Why was the computer cold? It left its Windows open!",
+        "Why do programmers prefer dark mode? Light attracts bugs! 🐞",
+        "Why was the computer cold? It left its Windows open! ❄️",
       ];
       const joke = jokes[Math.floor(Math.random() * jokes.length)];
       return { response: joke };
     } else if (/startup advice|give me advice/i.test(msg)) {
       const advice = [
-        "Focus on solving a real customer problem.",
-        "Launch a minimum viable product (MVP) to test your idea fast.",
+        "Solve a real customer pain point first. 🎯",
+        "Launch an MVP to test your idea quickly. 🚀",
       ];
       const tip = advice[Math.floor(Math.random() * advice.length)];
       return { response: tip };
@@ -97,7 +96,7 @@ export async function handleCohereRequest({ message, sessionId }) {
     else if (msg) {
       try {
         const response = await cohere.chat({
-          model: "command-r-plus", // Use a supported model for the chat API
+          model: "command-r-plus",
           message: msg,
           temperature: 0.7,
           max_tokens: 100,
@@ -111,7 +110,7 @@ export async function handleCohereRequest({ message, sessionId }) {
         return { response: botResponse };
       } catch (error) {
         console.error("Cohere error:", error);
-        return { response: "Oops! Something went wrong." };
+        return { response: "Oops, something broke! 😕 Try again?" };
       }
     }
   }
@@ -120,24 +119,28 @@ export async function handleCohereRequest({ message, sessionId }) {
     if (session.state === "lead_name") {
       session.data.name = message;
       session.state = "lead_contact";
-      return { response: "Thanks! What’s your email or phone number?" };
+      return {
+        response: "Great, thanks! 📝 What’s your email or phone number?",
+      };
     } else if (session.state === "lead_contact") {
       session.data.contact = message;
       session.state = "lead_project";
-      return { response: "What type of project are you interested in?" };
+      return {
+        response: "Awesome! 🚀 What kind of project are you thinking about?",
+      };
     } else if (session.state === "lead_project") {
       session.data.project = message;
       session.state = "lead_budget";
-      return { response: "What’s your estimated budget? (Optional)" };
+      return { response: "Nice! 💡 What’s your estimated budget? (Optional)" };
     } else if (session.state === "lead_budget") {
       session.data.budget = message || "Not provided";
       session.state = "lead_timeline";
-      return { response: "What’s your timeline or urgency?" };
+      return { response: "Got it! ⏰ What’s your timeline or urgency?" };
     } else if (session.state === "lead_timeline") {
       session.data.timeline = message;
-      console.log("Lead collected:", session.data); // Replace with email/CRM/Google Sheet integration
+      console.log("Lead collected:", session.data);
       session.state = "idle";
-      return { response: "Thanks! Our team will reach out soon." };
+      return { response: "Thanks! Our team will reach out soon. 😊" };
     }
   }
   // Scheduling Steps
@@ -145,19 +148,19 @@ export async function handleCohereRequest({ message, sessionId }) {
     if (session.state === "schedule_date") {
       session.data.date = message;
       session.state = "schedule_time";
-      return { response: "What time would you prefer?" };
+      return { response: "Perfect! 🕒 What time works for you?" };
     } else if (session.state === "schedule_time") {
       session.data.time = message;
-      console.log("Meeting scheduled:", session.data); // Replace with calendar integration
+      console.log("Meeting scheduled:", session.data);
       session.state = "idle";
       return {
-        response:
-          "Your consultation is booked! We’ll confirm the details soon.",
+        response: "Your consultation is booked! 📅 We’ll confirm soon.",
       };
     }
   }
 
   return {
-    response: "I’m not sure how to help with that. Try asking something else!",
+    response:
+      "Not sure what you mean. 🤔 Try asking about our services or contact info!",
   };
 }
