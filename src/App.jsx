@@ -48,6 +48,14 @@ function App() {
       </main>
       <Footer />
       <Chatbot />
+      {/* {showBackToTop && (
+        <button
+          onClick={scrollToTop}
+          className="fixed bottom-6 right-6 bg-sky-200 text-primary px-4 rounded-full shadow-lg transition-all duration-300 hover:bg-sky-300 hover:scale-110 hover:shadow-xl"
+        >
+          <ArrowUpIcon className="w-6 h-6" />
+        </button>
+      )} */}
     </div>
   );
 }

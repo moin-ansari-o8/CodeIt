@@ -69,7 +69,7 @@ const Hero = () => {
           {/* Left Side */}
           <div className="font-poppins animate-fadeIn">
             <h1 className="text-4xl font-bold tracking-tight sm:text-5xl lg:text-5xl xl:text-6xl">
-              Welcome to CodeIT Technologies
+              Welcome to CodeIt Technologies
               <br />
               <span className="inline-block min-h-[1.5em] w-[16ch] text-left bg-clip-text text-transparent bg-gradient-to-r from-[#38bdf8] to-[#0a192f] mt-8 mb-[-1.7rem]">
                 {currentText}
@@ -77,7 +77,7 @@ const Hero = () => {
               </span>
             </h1>
             <p className="mt-6 text-lg font-normal leading-relaxed sm:mt-8 sm:text-xl max-w-lg">
-              At CodeIT, we guide your tech journey with clarity and purpose.
+              At CodeIt, we guide your tech journey with clarity and purpose.
               From AI fueled innovation to rock solid maintenance.We build
               smarter, faster, and cleaner digital experiences that last.
             </p>
@@ -155,7 +155,7 @@ const Hero = () => {
                     fadeImage ? "animate-imageFade" : "opacity-100"
                   }`}
                   src={images[currentWordIndex]}
-                  alt="CodeIT freelancing illustration"
+                  alt="CodeIt freelancing illustration"
                 />
               </div>
             </div>

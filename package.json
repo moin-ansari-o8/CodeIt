@@ -13,6 +13,9 @@
   },
   "dependencies": {
     "@heroicons/react": "^2.2.0",
+    "cohere-ai": "^7.17.1",
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0",
     "framer-motion": "^12.16.0",
     "lucide-react": "^0.513.0",
     "react": "^19.1.0",
@@ -31,6 +34,7 @@
     "@types/react-dom": "^19.0.4",
     "@vitejs/plugin-react": "^4.3.4",
     "autoprefixer": "^10.4.21",
+    "buffer": "^6.0.3",
     "eslint": "^9.21.0",
     "eslint-plugin-react-hooks": "^5.1.0",
     "eslint-plugin-react-refresh": "^0.4.19",

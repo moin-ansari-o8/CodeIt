@@ -2,24 +2,39 @@ import { useEffect, useState, useRef } from "react";
 import {
   PaperAirplaneIcon,
   ChatBubbleLeftRightIcon,
+  TrashIcon,
+  XMarkIcon,
 } from "@heroicons/react/24/solid";
 import { v4 as uuidv4 } from "uuid";
+import { handleCohereRequest } from "../lib/cohereClient";
 
 const Chatbot = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [message, setMessage] = useState("");
   const [isExpanded, setIsExpanded] = useState(true);
   const [showButton, setShowButton] = useState(true);
-  const [messages, setMessages] = useState([]);
-  const [sessionId, setSessionId] = useState(null);
+  const [messages, setMessages] = useState(() => {
+    const savedMessages = localStorage.getItem("chatbotMessages");
+    return savedMessages ? JSON.parse(savedMessages) : [];
+  });
+  const [sessionId, setSessionId] = useState(() => {
+    return localStorage.getItem("chatbotSessionId") || null;
+  });
+  const [isLoading, setIsLoading] = useState(false);
   const containerRef = useRef(null);
   const messagesContainerRef = useRef(null);
+  const inputRef = useRef(null);
 
   // Auto-collapse button after 2s
   useEffect(() => {
     const timer = setTimeout(() => setIsExpanded(false), 2000);
     return () => clearTimeout(timer);
   }, []);
+
+  // Save messages to localStorage whenever they change
+  useEffect(() => {
+    localStorage.setItem("chatbotMessages", JSON.stringify(messages));
+  }, [messages]);
 
   // Close chatbox on outside click
   useEffect(() => {
@@ -49,17 +64,32 @@ const Chatbot = () => {
       messagesContainerRef.current.scrollTop =
         messagesContainerRef.current.scrollHeight;
     }
-  }, [messages]);
+  }, [messages, isLoading]);
 
-  // Toggle chat and send welcome message on open
+  // Toggle chat and send welcome message only for new sessions
   const toggleChat = () => {
     if (!isOpen) {
       setShowButton(false);
       setIsOpen(true);
       setIsExpanded(true);
-      const newSessionId = uuidv4();
-      setSessionId(newSessionId);
-      sendMessage({ event: "WELCOME" }, newSessionId);
+      let newSessionId = sessionId;
+      let isNewSession = false;
+
+      if (!newSessionId) {
+        newSessionId = uuidv4();
+        isNewSession = true;
+        setSessionId(newSessionId);
+        localStorage.setItem("chatbotSessionId", newSessionId);
+      }
+
+      setTimeout(() => {
+        inputRef.current?.focus();
+      }, 100);
+
+      if (isNewSession) {
+        setIsLoading(true);
+        sendMessage({ event: "WELCOME" }, newSessionId);
+      }
     } else {
       setIsOpen(false);
       setShowButton(true);
@@ -67,22 +97,23 @@ const Chatbot = () => {
     }
   };
 
-  // Send message or event to backend
-  const sendMessage = async (textOrEvent, sessId = sessionId) => {
-    const isEvent = typeof textOrEvent === "object";
-    const payload = isEvent
-      ? { event: textOrEvent.event, sessionId: sessId }
-      : { text: textOrEvent, sessionId: sessId };
+  // Send message or event to Cohere client
+  const sendMessage = async (text, sessId = sessionId) => {
+    setIsLoading(true);
     try {
-      const response = await fetch("/api/chatbotProxy", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
+      const data = await handleCohereRequest({
+        message: text,
+        sessionId: sessId,
       });
-      const data = await response.json();
       setMessages((prev) => [...prev, { text: data.response, sender: "bot" }]);
     } catch (error) {
       console.error("Error sending message:", error);
+      setMessages((prev) => [
+        ...prev,
+        { text: "Oops! Something went wrong.", sender: "bot" },
+      ]);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -91,9 +122,22 @@ const Chatbot = () => {
     e.preventDefault();
     if (message.trim()) {
       setMessages((prev) => [...prev, { text: message, sender: "user" }]);
-      await sendMessage(message);
       setMessage("");
+      inputRef.current.focus();
+      await sendMessage(message);
     }
+  };
+
+  // Clear input box
+  const clearInput = () => {
+    setMessage("");
+    inputRef.current.focus();
+  };
+
+  // Clear chatbox messages
+  const clearChat = () => {
+    setMessages([]);
+    localStorage.removeItem("chatbotMessages");
   };
 
   return (
@@ -165,6 +209,18 @@ const Chatbot = () => {
                 </p>
               </div>
             ))}
+            {/* Loading Indicator */}
+            {isLoading && (
+              <div className="text-left mb-3">
+                <div className="inline-block px-4 py-2 rounded-lg bg-gray-100">
+                  <div className="flex gap-1 items-center justify-start h-5">
+                    <span className="w-2 h-2 bg-sky-500 rounded-full animate-bounce delay-0"></span>
+                    <span className="w-2 h-2 bg-sky-500 rounded-full animate-bounce delay-150"></span>
+                    <span className="w-2 h-2 bg-sky-500 rounded-full animate-bounce delay-300"></span>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
 
           {/* Input */}
@@ -172,23 +228,98 @@ const Chatbot = () => {
             onSubmit={handleSendMessage}
             className="flex items-center gap-3 p-4 border-t border-gray-200"
           >
-            <input
-              type="text"
-              value={message}
-              onChange={(e) => setMessage(e.target.value)}
-              placeholder="Type your message..."
-              className="flex-grow px-4 py-3 border border-gray-300 rounded-lg text-sm outline-none focus:ring-2 focus:ring-sky-500"
-            />
-            <button
-              type="submit"
-              className="bg-sky-600 hover:bg-sky-700 text-white p-3 rounded-lg transition"
-              aria-label="Send message"
-            >
-              <PaperAirplaneIcon className="w-6 h-6 rotate-0" />
-            </button>
+            <div className="relative flex-grow">
+              <input
+                ref={inputRef}
+                type="text"
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
+                placeholder="Type your message..."
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg text-sm outline-none focus:ring-2 focus:ring-sky-500 pr-8"
+                disabled={isLoading}
+              />
+              {message && (
+                <button
+                  type="button"
+                  onClick={clearInput}
+                  className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                  aria-label="Clear input"
+                >
+                  <XMarkIcon className="w-5 h-5" />
+                </button>
+              )}
+            </div>
+            <div className="relative">
+              <button
+                type="submit"
+                className="bg-sky-600 hover:bg-sky-700 text-white p-3 rounded-lg transition relative"
+                aria-label="Send message"
+                disabled={isLoading}
+              >
+                <PaperAirplaneIcon className="w-6 h-6 rotate-0" />
+                <span className="tooltip">Send</span>
+              </button>
+            </div>
+            <div className="relative">
+              <button
+                type="button"
+                onClick={clearChat}
+                className="bg-sky-600 hover:bg-sky-700 text-white p-3 rounded-lg transition relative"
+                aria-label="Clear chat"
+                disabled={isLoading}
+              >
+                <TrashIcon className="w-6 h-6" />
+                <span className="tooltip">Clear</span>
+              </button>
+            </div>
           </form>
         </div>
       )}
+
+      {/* CSS for Loading Animation and Tooltips */}
+      <style jsx>{`
+        @keyframes bounce {
+          0%,
+          100% {
+            transform: translateY(0);
+          }
+          50% {
+            transform: translateY(-2px);
+          }
+        }
+        .animate-bounce {
+          animation: bounce 0.6s infinite;
+        }
+        .delay-0 {
+          animation-delay: 0s;
+        }
+        .delay-150 {
+          animation-delay: 0.15s;
+        }
+        .delay-300 {
+          animation-delay: 0.3s;
+        }
+        .tooltip {
+          visibility: hidden;
+          position: absolute;
+          bottom: 100%;
+          left: 50%;
+          transform: translateX(-50%);
+          background-color: #333;
+          color: white;
+          padding: 4px 8px;
+          border-radius: 4px;
+          font-size: 12px;
+          white-space: nowrap;
+          opacity: 0;
+          transition: opacity 0.2s, visibility 0.2s;
+          margin-bottom: 8px;
+        }
+        button:hover .tooltip {
+          visibility: visible;
+          opacity: 1;
+        }
+      `}</style>
     </>
   );
 };
