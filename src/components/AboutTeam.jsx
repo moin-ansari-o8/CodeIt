@@ -88,6 +88,10 @@ const AboutTeam = () => {
                   if (isPrev) handleHover(0);
                   if (isNext) handleHover(2);
                 }}
+                onClick={() => {
+                  if (isPrev) handleHover(0);
+                  if (isNext) handleHover(2);
+                }}
                 className={`transition-all duration-500 ease-in-out transform flex flex-col items-center justify-between p-4 sm:p-6 rounded-2xl shadow-xl bg-white mx-auto mb-10 ${
                   isActive
                     ? "scale-100 opacity-100 z-10"
@@ -105,7 +109,7 @@ const AboutTeam = () => {
                     alt={member.name}
                     className="w-36 h-36 sm:w-48 sm:h-48 object-cover rounded-full mb-4"
                     whileHover={{ scale: 1.05 }}
-                    transition={{ duration: 0.1 }}
+                    transition={{ duration: 0.3 }}
                   />
                 </div>
                 <div className="h-[10%] text-lg sm:text-xl font-semibold text-center">

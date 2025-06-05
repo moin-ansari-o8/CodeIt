@@ -40,7 +40,7 @@ const Navbar = () => {
       "home",
       "about",
       "services",
-      "portfolio",
+      // "portfolio",
       "team",
       "contact",
     ];
@@ -130,29 +130,27 @@ const Navbar = () => {
         </div>
         {/* Desktop Nav Links */}
         <ul className="hidden lg:flex space-x-8">
-          {["home", "about", "services", "portfolio", "team", "contact"].map(
-            (item) => (
-              <li key={item} className="relative">
-                <Link
-                  to={item}
-                  smooth={true}
-                  duration={500}
-                  offset={-82}
-                  className={`uppercase cursor-pointer transition-all duration-300 text-base font-medium ${
-                    activeLink === item
-                      ? "text-sky-800"
-                      : "text-sky-600 hover:text-sky-800"
-                  }`}
-                  onClick={() => handleLinkClick(item)}
-                >
-                  {item}
-                  {activeLink === item && (
-                    <span className="absolute bottom-0 left-0 w-full h-0.5 bg-sky-800 scale-x-100 transform origin-left transition-transform duration-300"></span>
-                  )}
-                </Link>
-              </li>
-            )
-          )}
+          {["home", "about", "services", "team", "contact"].map((item) => (
+            <li key={item} className="relative">
+              <Link
+                to={item}
+                smooth={true}
+                duration={500}
+                offset={-82}
+                className={`uppercase cursor-pointer transition-all duration-300 text-base font-medium ${
+                  activeLink === item
+                    ? "text-sky-800"
+                    : "text-sky-600 hover:text-sky-800"
+                }`}
+                onClick={() => handleLinkClick(item)}
+              >
+                {item}
+                {activeLink === item && (
+                  <span className="absolute bottom-0 left-0 w-full h-0.5 bg-sky-800 scale-x-100 transform origin-left transition-transform duration-300"></span>
+                )}
+              </Link>
+            </li>
+          ))}
         </ul>
         {/* Theme Toggle (Desktop) */}
         {/* <div className="hidden lg:flex items-center space-x-4">
@@ -183,29 +181,27 @@ const Navbar = () => {
       {isMenuOpen && (
         <div className="lg:hidden bg-secondary shadow-lg">
           <ul className="flex flex-col items-center py-4 space-y-4">
-            {["home", "about", "services", "portfolio", "team", "contact"].map(
-              (item) => (
-                <li key={item} className="relative">
-                  <Link
-                    to={item}
-                    smooth={true}
-                    duration={500}
-                    offset={-82}
-                    className={`uppercase cursor-pointer transition-all duration-300 text-lg font-medium ${
-                      activeLink === item
-                        ? "text-sky-500"
-                        : "text-text hover:text-sky-400"
-                    }`}
-                    onClick={() => handleLinkClick(item)}
-                  >
-                    {item}
-                    {activeLink === item && (
-                      <span className="absolute bottom-0 left-0 w-full h-0.5 bg-accent scale-x-100 transform origin-left transition-transform duration-300"></span>
-                    )}
-                  </Link>
-                </li>
-              )
-            )}
+            {["home", "about", "services", "team", "contact"].map((item) => (
+              <li key={item} className="relative">
+                <Link
+                  to={item}
+                  smooth={true}
+                  duration={500}
+                  offset={-82}
+                  className={`uppercase cursor-pointer transition-all duration-300 text-lg font-medium ${
+                    activeLink === item
+                      ? "text-sky-500"
+                      : "text-text hover:text-sky-400"
+                  }`}
+                  onClick={() => handleLinkClick(item)}
+                >
+                  {item}
+                  {activeLink === item && (
+                    <span className="absolute bottom-0 left-0 w-full h-0.5 bg-accent scale-x-100 transform origin-left transition-transform duration-300"></span>
+                  )}
+                </Link>
+              </li>
+            ))}
             {/* Theme Toggle (Mobile) */}
             {/* <button
               onClick={toggleTheme}
