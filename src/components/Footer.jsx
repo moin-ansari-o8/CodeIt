@@ -1,33 +1,31 @@
 import { MapPinIcon } from "@heroicons/react/24/outline";
+import { ArrowUpIcon } from "@heroicons/react/24/solid";
 import {
   FaFacebookF,
   FaXTwitter,
   FaLinkedinIn,
   FaInstagram,
 } from "react-icons/fa6";
-import logo from "../assets/CodeITDark.png"; // Adjust the path to your logo image
+import { animateScroll as scroll } from "react-scroll";
+import logo from "../assets/CodeITDark.png";
 
 const Footer = () => {
+  const scrollToTop = () => scroll.scrollToTop();
+
   return (
-    <footer className="bg-blue-200 text-sky-800 py-12">
+    <footer className="bg-blue-200 text-sky-800 py-12 relative">
       <div className="container mx-auto px-6">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
           {/* About Section */}
           <div>
             <h3 className="text-2xl font-bold mb-4">CodeIt</h3>
-            {/* <img
-              src={logo}
-              alt="CodeIt Logo"
-              className="mx-auto w-48 sm:w-56 md:w-64 lg:w-72 xl:w-80 transition-transform duration-500 hover:scale-105"
-            /> */}
-
             <p className="text-sm leading-relaxed text-sky-700">
               Empowering global innovation by connecting you with top-tier
               freelancers who turn ideas into impact.
             </p>
           </div>
 
-          {/* Contact / Address Section */}
+          {/* Contact Section */}
           <div>
             <h3 className="text-xl font-semibold mb-4 flex items-center gap-2">
               <MapPinIcon className="w-5 h-5 text-sky-700" />
@@ -87,12 +85,20 @@ const Footer = () => {
           </div>
         </div>
 
-        {/* Footer Bottom */}
+        {/* Footer Bottom Text */}
         <div className="mt-10 border-t border-sky-400 pt-6 text-center text-sm text-sky-600">
           © 2025 <span className="text-sky-800 font-semibold">CodeIt</span>. All
           rights reserved.
         </div>
       </div>
+
+      {/* Scroll to Top Button */}
+      <button
+        onClick={scrollToTop}
+        className="absolute bottom-6 right-6 bg-sky-200 text-primary p-4 rounded-full shadow-lg transition-all duration-300 hover:bg-sky-300 hover:scale-110 hover:shadow-xl"
+      >
+        <ArrowUpIcon className="w-6 h-6" />
+      </button>
     </footer>
   );
 };

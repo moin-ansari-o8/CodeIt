@@ -9,6 +9,7 @@ import Footer from "./components/Footer";
 import AboutTeam from "./components/AboutTeam";
 import { ArrowUpIcon } from "@heroicons/react/24/solid";
 import { animateScroll as scroll } from "react-scroll";
+import Chatbot from "./components/Chatbot";
 
 function App() {
   const [showBackToTop, setShowBackToTop] = useState(false);
@@ -46,14 +47,7 @@ function App() {
         {/* <Contact /> */}
       </main>
       <Footer />
-      {showBackToTop && (
-        <button
-          onClick={scrollToTop}
-          className="fixed bottom-6 right-6 bg-sky-200 text-primary p-4 rounded-full shadow-lg transition-all duration-300 hover:bg-sky-300 hover:scale-110 hover:shadow-xl"
-        >
-          <ArrowUpIcon className="w-6 h-6" />
-        </button>
-      )}
+      <Chatbot />
     </div>
   );
 }

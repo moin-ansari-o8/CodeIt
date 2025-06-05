@@ -3,6 +3,15 @@ export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {
+      animation: {
+        scaleUp: "scaleUp 0.3s ease-out forwards",
+      },
+      keyframes: {
+        scaleUp: {
+          "0%": { opacity: 0, transform: "scale(0.9) translateY(20px)" },
+          "100%": { opacity: 1, transform: "scale(1) translateY(0)" },
+        },
+      },
       colors: {
         primary: {
           DEFAULT: "var(--color-primary)", // Dynamic via CSS variables
