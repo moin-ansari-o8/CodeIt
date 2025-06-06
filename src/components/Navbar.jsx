@@ -104,16 +104,6 @@ const Navbar = () => {
     >
       <div className="container mx-auto flex justify-between items-center px-6 h-full">
         {/* Logo */}
-        {/* <div
-          className="text-2xl font-bold cursor-pointer bg-clip-text text-transparent bg-gradient-to-r from-sky-300 to-sky-200"
-          onClick={() => {
-            scroll.scrollToTop();
-            setActiveLink("home");
-            setIsMenuOpen(false);
-          }}
-        >
-          CodeIT
-        </div> */}
         <div
           className="cursor-pointer -ml-6"
           onClick={() => {
@@ -125,7 +115,7 @@ const Navbar = () => {
           <img
             src={logo}
             alt="CodeIT Logo"
-            className="h-35 lg:h-45 w-auto max-h-[190px] object-contain"
+            className="h-35 lg:h-45 w-auto max-h-[45px] object-contain"
           />
         </div>
         {/* Desktop Nav Links */}

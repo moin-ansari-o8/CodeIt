@@ -6,19 +6,27 @@ import {
   FaLinkedinIn,
   FaInstagram,
 } from "react-icons/fa6";
-import { animateScroll as scroll } from "react-scroll";
+import { Link, animateScroll as scroll } from "react-scroll";
 import logo from "../assets/CodeITDark.png";
 
 const Footer = () => {
   const scrollToTop = () => scroll.scrollToTop();
 
+  const navItems = ["home", "about", "services", "team", "contact"];
+
   return (
-    <footer className="bg-blue-200 text-sky-800 py-12 relative">
+    <footer className="bg-blue-200 text-sky-800 py-4 relative">
       <div className="container mx-auto px-6">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
           {/* About Section */}
           <div>
-            <h3 className="text-2xl font-bold mb-4">CodeIt</h3>
+            <div className="cursor-pointer mb-4 overflow-hidden flex items-left justify-left">
+              <img
+                src={logo}
+                alt="CodeIT Logo"
+                className="h-35 lg:h-45 w-auto max-h-[45px] object-contain"
+              />
+            </div>
             <p className="text-sm leading-relaxed text-sky-700">
               Empowering global innovation by connecting you with top-tier
               freelancers who turn ideas into impact.
@@ -45,8 +53,28 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/* Social Links */}
-          <div>
+          {/* Navigation Links Section */}
+          <div className="flex flex-col items-center text-center">
+            <h3 className="text-xl font-semibold mb-4">Quick Links</h3>
+            <ul className="text-sm space-y-2 text-sky-700">
+              {navItems.map((item) => (
+                <li key={item}>
+                  <Link
+                    to={item}
+                    smooth={true}
+                    duration={500}
+                    offset={-82}
+                    className="cursor-pointer hover:text-sky-900 transition-all duration-300 capitalize"
+                  >
+                    {item}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Social Links Section */}
+          <div className="flex flex-col items-center text-center">
             <h3 className="text-xl font-semibold mb-4">Follow Us</h3>
             <div className="flex gap-4">
               <a
@@ -86,7 +114,7 @@ const Footer = () => {
         </div>
 
         {/* Footer Bottom Text */}
-        <div className="mt-10 border-t border-sky-400 pt-6 text-center text-sm text-sky-600">
+        <div className="mt-3 border-t border-sky-400 pt-3 text-center text-sm text-sky-600">
           © 2025 <span className="text-sky-800 font-semibold">CodeIt</span>. All
           rights reserved.
         </div>

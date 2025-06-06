@@ -3,11 +3,9 @@ import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
 import About from "./components/About";
 import Services from "./components/Services";
-import Portfolio from "./components/Portfolio";
 import Contact from "./components/Contact";
 import Footer from "./components/Footer";
 import AboutTeam from "./components/AboutTeam";
-import { ArrowUpIcon } from "@heroicons/react/24/solid";
 import { animateScroll as scroll } from "react-scroll";
 import Chatbot from "./components/Chatbot";
 
@@ -42,9 +40,8 @@ function App() {
         <Hero />
         <About />
         <Services />
-        {/* <Portfolio /> */}
         <AboutTeam />
-        {/* <Contact /> */}
+        <Contact />
       </main>
       <Footer />
       <Chatbot />

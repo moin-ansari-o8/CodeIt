@@ -3,10 +3,10 @@ import { useState } from "react";
 import {
   PhoneIcon,
   EnvelopeIcon,
-  MapPinIcon,
   ArrowRightIcon,
 } from "@heroicons/react/24/solid";
-import woman from "../assets/businesswoman.jpg"; // Adjust the path to your image"
+import emailjs from "emailjs-com";
+
 const Contact = () => {
   const {
     register,
@@ -14,145 +14,191 @@ const Contact = () => {
     formState: { errors },
     reset,
   } = useForm();
+
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isSending, setIsSending] = useState(false);
 
   const onSubmit = (data) => {
-    console.log("Form data:", data);
-    setIsSubmitted(true);
-    reset();
-    setTimeout(() => setIsSubmitted(false), 3000);
+    // Must have at least email or phone
+    if (!data.email && !data.phone) {
+      alert("Please provide at least an email or phone number.");
+      return;
+    }
+
+    setIsSending(true);
+
+    // Double-check these IDs — paste exact strings from your EmailJS dashboard
+    const serviceID = "service_j06ea5e"; // your service ID here
+    const templateID = "template_xyellzh"; // your template ID here
+    const userID = "Cud9Vve4zfANPMLTQ"; // your user/public key here
+
+    // Debug print your data just before sending
+    console.log("Sending email with data:", data);
+
+    emailjs
+      .send(
+        serviceID,
+        templateID,
+        {
+          name: data.name || "No Name",
+          email: data.email || "No Email",
+          phone: data.phone || "No Phone",
+          message: data.message || "No message",
+          to_email: "monstermoin716@gmail.com", // confirm if you need this, or remove if template doesn’t expect it
+        },
+        userID
+      )
+      .then(
+        (result) => {
+          console.log("EmailJS success:", result.text);
+          setIsSending(false);
+          setIsSubmitted(true);
+          reset();
+          setTimeout(() => setIsSubmitted(false), 4000);
+        },
+        (error) => {
+          console.error("EmailJS error:", error);
+          alert("Oops! Something went wrong. Please try again.");
+          setIsSending(false);
+        }
+      );
   };
 
+  const currentText = "Connect";
+
   return (
-    <section
-      id="contact"
-      className="min-h-screen w-full bg-white text-gray-800 font-sans"
-    >
-      <div className="container mx-auto px-4 py-12 grid grid-cols-1 md:grid-cols-2 gap-10">
+    <section id="contact" className="w-full text-gray-800 font-sans py-0 mb-0">
+      <div className="container mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-10 mb-10">
         {/* Left Panel */}
-        <div className="bg-[#f7f9fc] p-8 rounded-xl shadow-md flex flex-col justify-between">
+        <div className="p-8 flex flex-col justify-center">
           <div>
-            <h2 className="text-3xl font-bold mb-4">
-              <span className="text-[#1e90ff]">Connect</span> with Our Team of
-              Experts
+            <h2 className="text-5xl sm:text-6xl font-extrabold leading-tight mb-4">
+              <span className="inline-block min-h-[1.5em] w-fit bg-clip-text text-transparent bg-gradient-to-r from-[#38bdf8] to-[#0a192f] mr-2">
+                {currentText}
+                <span className="animate-blink">|</span>
+              </span>
+              <span className="text-gray-800">with Our Team of Experts</span>
             </h2>
-            <p className="text-sm mb-6">
+            <p className="text-base sm:text-lg text-gray-700 mb-6">
               Contact our team of excellence-driven experts today to bring your
               project to life.
             </p>
-            <div className="flex flex-col gap-4 mb-6">
-              <div className="flex items-center gap-2">
-                <PhoneIcon className="w-5 h-5 text-[#1e90ff]" />
+
+            {/* Contact Info */}
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-start gap-6 mb-8">
+              <div className="flex items-center gap-2 text-lg font-medium text-[#0a192f]">
+                <PhoneIcon className="w-6 h-6 text-[#1e90ff]" />
                 <span>718.253.5200</span>
               </div>
-              <div className="flex items-center gap-2">
-                <EnvelopeIcon className="w-5 h-5 text-[#1e90ff]" />
+              <div className="flex items-center gap-2 text-lg font-medium text-[#0a192f]">
+                <EnvelopeIcon className="w-6 h-6 text-[#1e90ff]" />
                 <span>job@j.com</span>
               </div>
-              <div className="flex items-center gap-2">
-                <MapPinIcon className="w-5 h-5 text-[#1e90ff]" />
-                <a href="#" className="text-[#1e90ff] hover:underline">
-                  See Our Locations
-                </a>
-              </div>
             </div>
-            <div className="bg-white rounded-xl p-4 shadow border border-gray-200">
-              <h3 className="text-base font-semibold mb-2">
-                Want to Join Our Talented Team?
+
+            {/* Global Offices */}
+            <div className="bg-white shadow-lg rounded-xl p-6 space-y-4 border-l-4 border-sky-400">
+              <h3 className="text-xl font-bold text-sky-600 uppercase tracking-wide">
+                Global Offices
               </h3>
-              <button className="w-full bg-[#1e90ff] text-white py-2 rounded-lg font-semibold hover:bg-blue-600 transition-all">
-                Visit our job board
-              </button>
+              <p className="text-base text-gray-800">
+                <strong className="block">Afghanistan:</strong> Phase 4,
+                Omid-e-Sabz Township, Kabul
+              </p>
+              <p className="text-base text-gray-800">
+                <strong className="block">India:</strong> Anand, Gujarat, India
+              </p>
+              <p className="text-base text-gray-800">
+                <strong className="block">Germany:</strong> Hansastraße 79a,
+                Munich
+              </p>
             </div>
-          </div>
-          <div className="mt-8">
-            <img
-              src={woman}
-              alt="Smiling Businesswoman"
-              width={500}
-              height={400}
-              className="rounded-xl object-cover w-full h-60"
-            />
           </div>
         </div>
 
         {/* Right Panel */}
-        <div className="bg-[#0a1f44] p-8 rounded-xl shadow-md text-white">
-          {isSubmitted && (
-            <p className="text-center text-green-400 mb-4 animate-fadeIn">
-              Message sent successfully! We'll get back to you soon.
-            </p>
-          )}
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-            <input
-              type="text"
-              {...register("name", { required: "Full Name is required" })}
-              placeholder="Full Name"
-              className="w-full p-3 rounded-md text-black focus:outline-none focus:ring-2 focus:ring-blue-400"
-            />
-            {errors.name && (
-              <p className="text-red-400 text-sm">{errors.name.message}</p>
+        <div className="p-8 text-white flex justify-center items-center">
+          <div className="w-full max-w-lg bg-sky-600 ml-10 p-8 rounded-lg shadow-lg">
+            {isSubmitted && (
+              <p className="text-center text-green-400 mb-4 animate-fadeIn">
+                Message sent successfully! We'll get back to you soon.
+              </p>
             )}
 
-            <input
-              type="email"
-              {...register("email", { required: "Email is required" })}
-              placeholder="Email Address"
-              className="w-full p-3 rounded-md text-black focus:outline-none focus:ring-2 focus:ring-blue-400"
-            />
-            {errors.email && (
-              <p className="text-red-400 text-sm">{errors.email.message}</p>
-            )}
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+              <div className="flex flex-col md:flex-row gap-4">
+                <div className="w-full">
+                  <input
+                    type="text"
+                    {...register("name", { required: "Full Name is required" })}
+                    placeholder="Full Name"
+                    className="w-full p-3 rounded-md text-black focus:outline-none focus:ring-2 focus:ring-blue-400"
+                  />
+                  {errors.name && (
+                    <p className="text-red-400 text-sm">
+                      {errors.name.message}
+                    </p>
+                  )}
+                </div>
+                <div className="w-full">
+                  <input
+                    type="tel"
+                    {...register("phone", {
+                      pattern: {
+                        value: /^[0-9+\-()\s]*$/,
+                        message: "Phone number contains invalid characters",
+                      },
+                    })}
+                    placeholder="Phone Number"
+                    className="w-full p-3 rounded-md text-black focus:outline-none focus:ring-2 focus:ring-blue-400"
+                  />
+                  {errors.phone && (
+                    <p className="text-red-400 text-sm">
+                      {errors.phone.message}
+                    </p>
+                  )}
+                </div>
+              </div>
 
-            <input
-              type="number"
-              {...register("phone", { required: "Phone number is required" })}
-              placeholder="Phone Number"
-              className="w-full p-3 rounded-md text-black focus:outline-none focus:ring-2 focus:ring-blue-400"
-            />
-            {errors.phone && (
-              <p className="text-red-400 text-sm">{errors.phone.message}</p>
-            )}
+              <input
+                type="email"
+                {...register("email", {
+                  pattern: {
+                    value: /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/,
+                    message: "Invalid email address",
+                  },
+                })}
+                placeholder="Email Address"
+                className="w-full p-3 rounded-md text-black focus:outline-none focus:ring-2 focus:ring-blue-400"
+              />
+              {errors.email && (
+                <p className="text-red-400 text-sm">{errors.email.message}</p>
+              )}
 
-            <input
-              type="text"
-              {...register("location")}
-              placeholder="Location"
-              className="w-full p-3 rounded-md text-black focus:outline-none focus:ring-2 focus:ring-blue-400"
-            />
+              <textarea
+                {...register("message", { required: "Message is required" })}
+                placeholder="Your Message"
+                rows="5"
+                className="w-full p-3 rounded-md text-black focus:outline-none focus:ring-2 focus:ring-blue-400"
+              ></textarea>
+              {errors.message && (
+                <p className="text-red-400 text-sm">{errors.message.message}</p>
+              )}
 
-            <select
-              {...register("expertise")}
-              className="w-full p-3 rounded-md text-black focus:outline-none focus:ring-2 focus:ring-blue-400"
-            >
-              <option value="">What Expertise You’re Interested In</option>
-              <option value="web">Web Development</option>
-              <option value="mobile">Mobile Apps</option>
-              <option value="uiux">UI/UX Design</option>
-              <option value="cloud">Cloud Architecture</option>
-              <option value="ai">AI & ML Solutions</option>
-            </select>
-
-            <textarea
-              {...register("project", {
-                required: "Tell us about your project",
-              })}
-              placeholder="Tell Us About Your Project"
-              rows="5"
-              className="w-full p-3 rounded-md text-black focus:outline-none focus:ring-2 focus:ring-blue-400"
-            ></textarea>
-            {errors.project && (
-              <p className="text-red-400 text-sm">{errors.project.message}</p>
-            )}
-
-            <button
-              type="submit"
-              className="flex items-center justify-center gap-2 bg-sky-500 text-white p-3 rounded-md font-semibold hover:bg-sky-600 transition-all"
-            >
-              Submit
-              <ArrowRightIcon className="w-5 h-5" />
-            </button>
-          </form>
+              <div className="pt-2">
+                <button
+                  type="submit"
+                  disabled={isSending}
+                  className={`flex items-center gap-2 bg-sky-900 text-white px-5 py-3 rounded-md font-semibold transform transition-transform duration-300 hover:scale-105 ${
+                    isSending ? "opacity-70 cursor-not-allowed" : ""
+                  }`}
+                >
+                  {isSending ? "Sending..." : "Submit"}
+                  <ArrowRightIcon className="w-5 h-5" />
+                </button>
+              </div>
+            </form>
+          </div>
         </div>
       </div>
     </section>
