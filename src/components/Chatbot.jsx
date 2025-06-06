@@ -137,6 +137,7 @@ const Chatbot = () => {
           messagesContainerRef.current.scrollTop =
             messagesContainerRef.current.scrollHeight;
         }
+
         inputRef.current?.focus();
       }, 150); // slightly delayed to wait for DOM render
     } else {
