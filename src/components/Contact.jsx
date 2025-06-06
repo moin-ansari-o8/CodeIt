@@ -54,7 +54,7 @@ const Contact = () => {
           setIsSending(false);
           setIsSubmitted(true);
           reset();
-          setTimeout(() => setIsSubmitted(false), 4000);
+          setTimeout(() => setIsSubmitted(false), 10000);
         },
         (error) => {
           console.error("EmailJS error:", error);
@@ -119,12 +119,6 @@ const Contact = () => {
         {/* Right Panel */}
         <div className="p-8 text-white flex justify-center items-center">
           <div className="w-full max-w-lg bg-sky-600 ml-10 p-8 rounded-lg shadow-lg">
-            {isSubmitted && (
-              <p className="text-center text-green-400 mb-4 animate-fadeIn">
-                Message sent successfully! We'll get back to you soon.
-              </p>
-            )}
-
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
               <div className="flex flex-col md:flex-row gap-4">
                 <div className="w-full">
@@ -163,9 +157,10 @@ const Contact = () => {
               <input
                 type="email"
                 {...register("email", {
+                  required: "Email address is required",
                   pattern: {
                     value: /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/,
-                    message: "Invalid email address",
+                    message: "Please enter a valid email address",
                   },
                 })}
                 placeholder="Email Address"
@@ -198,6 +193,15 @@ const Contact = () => {
                 </button>
               </div>
             </form>
+            {isSubmitted && (
+              <p
+                className="text-center text-gray-400 mb-6 text-2xl font-bold
+               opacity-100 transition-opacity duration-1000"
+                style={{ animation: "fadeInOut 10s forwards" }}
+              >
+                Message sent successfully! We'll get back to you soon.
+              </p>
+            )}
           </div>
         </div>
       </div>
