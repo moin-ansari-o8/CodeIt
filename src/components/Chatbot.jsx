@@ -14,11 +14,15 @@ const Chatbot = () => {
   const [isExpanded, setIsExpanded] = useState(true);
   const [showButton, setShowButton] = useState(true);
   const [messages, setMessages] = useState(() => {
-    const savedMessages = localStorage.getItem("chatbotMessages");
-    return savedMessages ? JSON.parse(savedMessages) : [];
+    // Clear messages on page load
+    localStorage.removeItem("chatbotMessages");
+    return [{ text: "SERVICE_MENU", sender: "bot", isServiceMenu: true }];
   });
   const [sessionId, setSessionId] = useState(() => {
-    return localStorage.getItem("chatbotSessionId") || null;
+    // Generate new session ID on page load
+    const newSessionId = uuidv4();
+    localStorage.setItem("chatbotSessionId", newSessionId);
+    return newSessionId;
   });
   const [isLoading, setIsLoading] = useState(false);
   const [dimensions, setDimensions] = useState(() => {
@@ -30,6 +34,16 @@ const Chatbot = () => {
   const inputRef = useRef(null);
   const resizeRef = useRef(null);
   const [isResizing, setIsResizing] = useState(null);
+
+  // Service options for the menu
+  const serviceOptions = [
+    "Web Development: Custom websites & e-commerce",
+    "Mobile Apps: iOS & Android solutions",
+    "UI/UX Design: User-friendly interfaces",
+    "Cloud Solutions: Scalable infrastructure",
+    "Digital Marketing: SEO & social media",
+    "AI & ML: Smart automation",
+  ];
 
   // Auto-collapse button after 2s
   useEffect(() => {
@@ -118,8 +132,8 @@ const Chatbot = () => {
     };
   }, [isResizing, dimensions]);
 
-  // Toggle chat and send welcome message
-  const toggleChat = () => {
+  // Toggle chat and initialize with service menu
+  const toggleChat = async () => {
     if (!isOpen) {
       setShowButton(false);
       setIsOpen(true);
@@ -131,6 +145,17 @@ const Chatbot = () => {
         setSessionId(newSessionId);
         localStorage.setItem("chatbotSessionId", newSessionId);
       }
+
+      // Initialize with service menu
+      setMessages([
+        { text: "SERVICE_MENU", sender: "bot", isServiceMenu: true },
+      ]);
+      localStorage.setItem(
+        "chatbotMessages",
+        JSON.stringify([
+          { text: "SERVICE_MENU", sender: "bot", isServiceMenu: true },
+        ])
+      );
 
       setTimeout(() => {
         inputRef.current?.focus();
@@ -186,8 +211,13 @@ const Chatbot = () => {
 
   // Clear chat
   const clearChat = () => {
-    setMessages([]);
-    localStorage.removeItem("chatbotMessages");
+    setMessages([{ text: "SERVICE_MENU", sender: "bot", isServiceMenu: true }]);
+    localStorage.setItem(
+      "chatbotMessages",
+      JSON.stringify([
+        { text: "SERVICE_MENU", sender: "bot", isServiceMenu: true },
+      ])
+    );
     inputRef.current?.focus();
   };
 
@@ -207,16 +237,6 @@ const Chatbot = () => {
     setMessages((prev) => [...prev, { text: service, sender: "user" }]);
     await sendMessage(serviceKey);
   };
-
-  // Service options for the menu
-  const serviceOptions = [
-    "Web Development: Custom websites & e-commerce",
-    "Mobile Apps: iOS & Android solutions",
-    "UI/UX Design: User-friendly interfaces",
-    "Cloud Solutions: Scalable infrastructure",
-    "Digital Marketing: SEO & social media",
-    "AI & ML: Smart automation",
-  ];
 
   return (
     <>
@@ -256,8 +276,7 @@ const Chatbot = () => {
       isOpen
         ? "opacity-100 scale-100 translate-y-0"
         : "opacity-0 scale-75 translate-y-12 pointer-events-none"
-    }
-  `}
+    }`}
           style={{
             willChange: "transform, opacity",
             width: `${dimensions.width}px`,
@@ -270,28 +289,23 @@ const Chatbot = () => {
         >
           {/* Resize Handles */}
           <div
-            className={`absolute top-0 left-0 right-0 h-2 cursor-ns-resize
-            }`}
+            className="absolute top-0 left-0 right-0 h-2 cursor-ns-resize"
             onMouseDown={startResize("top")}
           />
           <div
-            className={`absolute top-0 left-0 w-4 h-4 cursor-nwse-resize
-            }`}
+            className="absolute top-0 left-0 w-4 h-4 cursor-nwse-resize"
             onMouseDown={startResize("top-left")}
           />
           <div
-            className={`absolute top-0 bottom-0 left-0 w-2 cursor-ew-resize 
-            }`}
+            className="absolute top-0 bottom-0 left-0 w-2 cursor-ew-resize"
             onMouseDown={startResize("left")}
           />
           <div
-            className={`absolute bottom-0 left-0 w-4 h-4 cursor-nesw-resize
-            }`}
+            className="absolute bottom-0 left-0 w-4 h-4 cursor-nesw-resize"
             onMouseDown={startResize("bottom-left")}
           />
           <div
-            className={`absolute bottom-0 left-0 right-0 h-2 cursor-ns-resize
-            }`}
+            className="absolute bottom-0 left-0 right-0 h-2 cursor-ns-resize"
             onMouseDown={startResize("bottom")}
           />
 
@@ -313,25 +327,6 @@ const Chatbot = () => {
               ref={messagesContainerRef}
               className="p-4 text-gray-800 flex-grow overflow-y-auto border-b border-sky-100 text-sm"
             >
-              {/* Persistent Service Menu */}
-              <div className="flex flex-col items-center text-center text-gray-600 rounded-lg p-4 bg-sky-50 mb-4">
-                <p className="text-lg font-semibold mb-4">
-                  What can I help you with? 🌟
-                </p>
-                <div className="grid grid-cols-1 gap-2 w-full max-w-xs">
-                  {serviceOptions.map((service, index) => (
-                    <button
-                      key={index}
-                      onClick={() => handleServiceClick(service)}
-                      className="bg-sky-100 hover:bg-sky-200 text-sky-800 px-4 py-2 rounded-lg text-left text-sm transition"
-                    >
-                      {service}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              {/* Message History */}
               {messages.map((msg, index) => (
                 <div
                   key={index}
@@ -339,15 +334,34 @@ const Chatbot = () => {
                     msg.sender === "user" ? "text-right" : "text-left"
                   }`}
                 >
-                  <p
-                    className={`inline-block px-4 py-2 rounded-lg ${
-                      msg.sender === "user"
-                        ? "bg-sky-300 text-sky-900"
-                        : "bg-sky-100 text-sky-800"
-                    } max-w-[80%] whitespace-pre-wrap`}
-                  >
-                    {msg.text}
-                  </p>
+                  {msg.isServiceMenu ? (
+                    <div className="flex flex-col items-center text-center text-gray-600 rounded-lg p-4 bg-sky-50">
+                      <p className="text-lg font-semibold mb-4">
+                        What can I help you with? 🌟
+                      </p>
+                      <div className="grid grid-cols-1 gap-2 w-full max-w-xs">
+                        {serviceOptions.map((service, idx) => (
+                          <button
+                            key={idx}
+                            onClick={() => handleServiceClick(service)}
+                            className="bg-sky-100 hover:bg-sky-200 text-sky-800 px-4 py-2 rounded-lg text-left text-sm transition"
+                          >
+                            {service}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  ) : (
+                    <p
+                      className={`inline-block px-4 py-2 rounded-lg ${
+                        msg.sender === "user"
+                          ? "bg-sky-300 text-sky-900"
+                          : "bg-sky-100 text-sky-800"
+                      } max-w-[80%] whitespace-pre-wrap`}
+                    >
+                      {msg.text}
+                    </p>
+                  )}
                 </div>
               ))}
               {isLoading && (

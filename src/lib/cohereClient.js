@@ -30,7 +30,7 @@ const serviceNavigator = {
     response:
       "Digital Marketing: SEO & Social Media\nAt Codeit, our digital marketing maestros turn traffic into trust. With SEO strategies, viral social content, and conversion-focused campaigns, we help your brand rise, roar, and resonate.",
   },
-  "ai & ml": {
+  "ai and ml": {
     response:
       "AI & ML: Smart Automation\nLet smart tech do the heavy lifting. Codeit’s AI & ML experts craft intelligent solutions that automate tasks, analyze data, and predict trends—so you can focus on what truly matters.",
   },
@@ -40,7 +40,7 @@ const serviceNavigator = {
 const intents = [
   {
     patternCheckPrompt:
-      "Does the user want to know how the assistant or company is doing? (e.g., 'how are you', 'what’s up', 'how you doing')",
+      "Is the user asking how the assistant or company is doing? Examples: 'how are you', 'what’s up', 'how you doing', 'hru'.",
     promptForReply:
       "Respond as Coral, a friendly assistant at Codeit, saying you're doing great and briefly mentioning Codeit's services (web development, mobile apps, UI/UX, cloud solutions, digital marketing, AI & ML). Keep it professional but chill and human-like.",
     regex: /^(how are you|how are you doing|what’s up|hru|how u doing)\??$/i,
@@ -49,7 +49,7 @@ const intents = [
   },
   {
     patternCheckPrompt:
-      "Does the user want to know who the assistant is or what Codeit does? (e.g., 'who are you', 'what is codeit', 'what can you do')",
+      "Is the user asking who the assistant is or what Codeit does? Examples: 'who are you', 'what is codeit', 'what can you do', 'tell me about the company'.",
     promptForReply:
       "Introduce yourself as Coral, Codeit’s virtual assistant, and explain that Codeit is a creative tech company offering services like websites, mobile apps, UI/UX, cloud setups, and AI. Keep the tone confident and human-like.",
     regex:
@@ -59,26 +59,26 @@ const intents = [
   },
   {
     patternCheckPrompt:
-      "Does the user want to know about services offered by Codeit? (e.g., 'what services do you offer', 'what do you do')",
+      "Is the user asking about services offered by Codeit? Examples: 'what services do you offer', 'what are the services', 'what do you do', 'services'.",
     promptForReply:
       "List Codeit’s services: web development, mobile apps, UI/UX design, cloud solutions, digital marketing, AI & ML. Ask what interests the user.",
-    regex: /services|what do you offer/i,
+    regex: /services|what do you offer|what are the services|what do you do/i,
     response:
       "Here’s what we offer at Codeit:\n- Web Development: Custom websites & e-commerce\n- Mobile Apps: iOS & Android solutions\n- UI/UX Design: User-friendly interfaces\n- Cloud Solutions: Scalable infrastructure\n- Digital Marketing: SEO & social media\n- AI & ML: Smart automation\nWhat interests you?",
   },
   {
     patternCheckPrompt:
-      "Does the user want to start a project or work with Codeit? (e.g., 'start a project', 'work with you')",
+      "Is the user wanting to start a project or work with Codeit? Examples: 'start a project', 'work with you', 'i want to start a project'.",
     promptForReply:
       "Express excitement about starting a project and ask for the user’s name to begin the lead generation process.",
-    regex: /start a project|work with you/i,
+    regex: /start a project|work with you|i want to start a project/i,
     response:
       "Excited to kick off a project? Please share your name to get started!",
     nextState: "lead_name",
   },
   {
     patternCheckPrompt:
-      "Does the user want to schedule a meeting or book a call? (e.g., 'schedule a meeting', 'book a call')",
+      "Is the user wanting to schedule a meeting or book a call? Examples: 'schedule a meeting', 'book a call', 'schedule'.",
     promptForReply:
       "Offer to set up a free 15-minute consultation and ask for a preferred day.",
     regex: /schedule|book a meeting|book a call/i,
@@ -88,45 +88,55 @@ const intents = [
   },
   {
     patternCheckPrompt:
-      "Does the user want contact information? (e.g., 'contact', 'reach out', 'phone', 'email')",
+      "Is the user asking for contact information? Examples: 'contact', 'reach out', 'phone', 'email', 'i want to contact'.",
     promptForReply:
       "Provide Codeit’s contact details: phone (+123-456-7890), email (contact@codeit.com), WhatsApp (+123-456-7890), LinkedIn (linkedin.com/company/codeit).",
-    regex: /contact|reach out|phone|email|whatsapp|linkedin/i,
+    regex: /contact|reach out|phone|email|whatsapp|linkedin|i want to contact/i,
     response:
       "Get in touch with us!\n- Phone: +123-456-7890\n- Email: contact@codeit.com\n- WhatsApp: +123-456-7890\n- LinkedIn: linkedin.com/company/codeit\nWe’re here to help!",
   },
   {
     patternCheckPrompt:
-      "Does the user ask how long a project takes? (e.g., 'how long does a project take')",
+      "Is the user asking how long a project takes? Examples: 'how long does a project take', 'project timeline'.",
     promptForReply:
       "Explain that project timelines depend on scope, with typical web projects taking 4–12 weeks, and ask for specifics about their idea.",
-    regex: /how long does a project take/i,
+    regex: /how long does a project take|project timeline/i,
     response:
       "Project timelines depend on scope. A typical web project takes 4–12 weeks. Want specifics for your idea?",
   },
   {
     patternCheckPrompt:
-      "Does the user ask if Codeit works with startups? (e.g., 'do you work with startups')",
+      "Is the user asking if Codeit works with startups? Examples: 'do you work with startups', 'startups'.",
     promptForReply:
       "Confirm that Codeit loves working with startups and ask about their startup.",
-    regex: /do you work with startups/i,
+    regex: /do you work with startups|startups/i,
     response:
       "Absolutely, we love startups! We offer flexible solutions to fuel your growth. What’s your startup about?",
   },
   {
     patternCheckPrompt:
-      "Does the user ask about industries Codeit works with? (e.g., 'what industries')",
+      "Is the user asking about industries Codeit works with? Examples: 'what industries', 'industries you serve'.",
     promptForReply:
       "State that Codeit works across tech, healthcare, e-commerce, and more, and ask about the user’s industry.",
-    regex: /what industries/i,
+    regex: /what industries|industries you serve/i,
     response:
       "We work across tech, healthcare, e-commerce, and more. What’s your industry?",
   },
   {
     patternCheckPrompt:
-      "Does the user want a tech joke? (e.g., 'tell me a tech joke')",
+      "Is the user asking about pricing? Examples: 'how much does it cost', 'pricing', 'cost'.",
+    promptForReply:
+      "Explain that pricing depends on the project scope and suggest starting a project to get a quote.",
+    regex: /pricing|how much|cost/i,
+    response:
+      "Pricing depends on your project’s scope. Let’s start a project to get you a tailored quote!",
+    nextState: "lead_name",
+  },
+  {
+    patternCheckPrompt:
+      "Is the user asking for a tech joke? Examples: 'tell me a tech joke', 'tech joke', 'joke'.",
     promptForReply: "Share a random tech joke in a fun, engaging tone.",
-    regex: /tell me a joke|tech joke/i,
+    regex: /tell me a joke|tech joke|joke/i,
     responses: [
       "Why do programmers prefer dark mode? Because light attracts bugs!",
       "Why did the developer go broke? Because he used up all his cache!",
@@ -138,10 +148,10 @@ const intents = [
   },
   {
     patternCheckPrompt:
-      "Does the user want startup advice? (e.g., 'startup advice', 'give me advice')",
+      "Is the user asking for startup advice? Examples: 'startup advice', 'give me advice', 'advice for startups'.",
     promptForReply:
       "Provide concise, actionable startup advice in a friendly tone.",
-    regex: /startup advice|give me advice/i,
+    regex: /startup advice|give me advice|advice for startups/i,
     responses: [
       "Start small, build fast, learn faster.",
       "Solve a real pain point, not just a cool idea.",
@@ -161,7 +171,7 @@ export async function handleCohereRequest({ message, sessionId }) {
   );
 
   const systemPrompt =
-    "You are Coral, the friendly, helpful, human-sounding chatbot working at *Codeit*, a modern tech company. You are never robotic, overly formal, or emotionless. Never say you're an AI or language model. You are Codeit’s virtual assistant and team member. For questions like 'how are you', reply naturally like: 'I’m great! What about you?' and then follow up with 4-5 short, useful lines about Codeit's services and vibe. Be professional but chill, confident, and human-like in tone.";
+    "You are Coral, the friendly, helpful, human-sounding chatbot working at *Codeit*, a modern tech company. You are never robotic, overly formal, or emotionless. Never say you're an AI or language model. You are Codeit’s virtual assistant and team member. Be professional but chill, confident, and human-like in tone.";
 
   // Initialize session if not exists
   if (!sessions[sessionId]) {
@@ -170,11 +180,10 @@ export async function handleCohereRequest({ message, sessionId }) {
   const session = sessions[sessionId];
   const msg = message.event === "WELCOME" ? "" : message.trim().toLowerCase();
 
-  // Welcome message for new sessions
+  // Return service menu for WELCOME event
   if (message.event === "WELCOME") {
     return {
-      response:
-        "Hi there! Welcome to Codeit. I'm Coral, here to help you explore our services, answer questions, or get in touch with the team. What’s on your mind?",
+      response: "SERVICE_MENU",
     };
   }
 
@@ -207,7 +216,7 @@ export async function handleCohereRequest({ message, sessionId }) {
     } else if (session.state === "lead_timeline") {
       session.data.timeline = message;
       console.log("Lead collected:", session.data);
-      // TODO: Integrate with CRM or Google Sheet here (e.g., send to an API endpoint)
+      // TODO: Integrate with CRM or Google Sheet here
       session.state = "idle";
       return { response: "Thanks! Our team will reach out soon." };
     }
@@ -222,7 +231,7 @@ export async function handleCohereRequest({ message, sessionId }) {
     } else if (session.state === "schedule_time") {
       session.data.time = message;
       console.log("Meeting scheduled:", session.data);
-      // TODO: Integrate with calendar API (e.g., Google Calendar) here
+      // TODO: Integrate with calendar API here
       session.state = "idle";
       return {
         response: "You're all set! We'll follow up to confirm the details.",
@@ -239,7 +248,7 @@ export async function handleCohereRequest({ message, sessionId }) {
       )
       .join(
         "\n"
-      )}\nReturn the index of the matching intent (1-based) or 0 if no match.`;
+      )}\nReturn the index of the matching intent (1-based) or 0 if no match. Only return the number.`;
 
     const intentResponse = await cohere.chat({
       model: "command-r-plus",
@@ -253,7 +262,7 @@ export async function handleCohereRequest({ message, sessionId }) {
     if (intentIndex >= 0 && intentIndex < intents.length) {
       const intent = intents[intentIndex];
 
-      // Fallback to regex for critical flows
+      // Use regex as fallback for critical flows
       if (intent.regex && intent.regex.test(msg)) {
         if (intent.nextState) {
           session.state = intent.nextState;
@@ -270,7 +279,7 @@ export async function handleCohereRequest({ message, sessionId }) {
         model: "command-r-plus",
         message: intent.promptForReply,
         temperature: 0.7,
-        max_tokens: 120,
+        max_tokens: 150,
         chatHistory: [
           { role: "SYSTEM", message: systemPrompt },
           { role: "USER", message },
@@ -286,7 +295,7 @@ export async function handleCohereRequest({ message, sessionId }) {
       return { response: response.text.trim() };
     }
 
-    // Fallback response if no intent matches
+    // Fallback response
     return {
       response:
         "Hmm, not sure I got that. Try asking about our services, starting a project, or booking a call!",
