@@ -1,161 +1,134 @@
 import { CohereClient } from "cohere-ai";
 
-// Initialize Cohere with your API key
 const cohere = new CohereClient({
   token: import.meta.env.VITE_COHERE_API_KEY,
 });
 
-// In-memory session store (client-side)
 const sessions = {};
 
-// Service Navigator Responses (persistent menu buttons)
 const serviceNavigator = {
-  "web development": {
+  "about our company": {
     response:
-      "Web Development: Custom Websites & E-Commerce\nAt Codeit, our web dev wizards craft stunning, high-performing websites and e-commerce platforms. From bold landing pages to complex online stores, we blend creativity with clean code to bring your brand alive online.",
+      "Codeit: Creative tech company delivering websites, mobile apps, UI/UX, cloud, marketing, and AI solutions.",
   },
-  "mobile apps": {
+  "our services": {
     response:
-      "Mobile Apps: iOS & Android Solutions\nWe build sleek, scalable mobile apps that live in users’ pockets and hearts. Whether it’s Android or iOS, our Codeit crew turns your vision into intuitive, impactful apps that just feel right.",
+      "We offer web development, mobile apps, UI/UX design, cloud solutions, digital marketing, and AI/ML automation.",
   },
-  "ui/ux design": {
-    response:
-      "UI/UX Design: User-Friendly Interfaces\nDesign is the soul of experience—and at Codeit, our UI/UX artists create interfaces that aren’t just pretty, but purposeful. We make every click effortless, every screen delightful.",
+  "how to contact?": {
+    response: "Visit our contact section for details!",
   },
-  "cloud solutions": {
-    response:
-      "Cloud Solutions: Scalable Infrastructure\nCodeit brings the cloud down to earth—our engineers build robust, secure, and scalable cloud solutions tailored to your growth. From AWS to Azure, we keep your systems light, fast, and future-ready.",
+  "schedule meeting?": {
+    response: "Check our contact section to book a meeting!",
   },
-  "digital marketing": {
+  "social media and follow": {
     response:
-      "Digital Marketing: SEO & Social Media\nAt Codeit, our digital marketing maestros turn traffic into trust. With SEO strategies, viral social content, and conversion-focused campaigns, we help your brand rise, roar, and resonate.",
-  },
-  "ai and ml": {
-    response:
-      "AI & ML: Smart Automation\nLet smart tech do the heavy lifting. Codeit’s AI & ML experts craft intelligent solutions that automate tasks, analyze data, and predict trends—so you can focus on what truly matters.",
+      "Follow us on LinkedIn (linkedin.com/company/codeit), Twitter (@CodeitTech), Instagram (@CodeitTech).",
   },
 };
 
-// Modular Intents (editable for intent detection and responses)
 const intents = [
   {
     patternCheckPrompt:
       "Is the user asking how the assistant or company is doing? Examples: 'how are you', 'what’s up', 'how you doing', 'hru'.",
     promptForReply:
-      "Respond as Coral, a friendly assistant at Codeit, saying you're doing great and briefly mentioning Codeit's services (web development, mobile apps, UI/UX, cloud solutions, digital marketing, AI & ML). Keep it professional but chill and human-like.",
+      "As Coral from Codeit, say you're doing great, mention services briefly, max 20 words.",
     regex: /^(how are you|how are you doing|what’s up|hru|how u doing)\??$/i,
     response:
-      "I’m doing great! What about you? At Codeit, we craft digital magic — from custom websites and sleek mobile apps to UI/UX design, AI automation, and marketing solutions. We're a crew of tech lovers making brands shine online. Let’s build something awesome together.",
+      "I'm great! Codeit offers web, mobile, UI/UX, cloud, marketing, AI. Let's build something cool!",
   },
   {
     patternCheckPrompt:
       "Is the user asking who the assistant is or what Codeit does? Examples: 'who are you', 'what is codeit', 'what can you do', 'tell me about the company'.",
     promptForReply:
-      "Introduce yourself as Coral, Codeit’s virtual assistant, and explain that Codeit is a creative tech company offering services like websites, mobile apps, UI/UX, cloud setups, and AI. Keep the tone confident and human-like.",
+      "As Coral, introduce Codeit as a tech company with full services, no word limit.",
     regex:
       /^(who are you|what are you|what can you do|what is codeit|tell me about (this )?company)\??$/i,
     response:
-      "I'm Coral, your friendly tech-sidekick at Codeit! We’re a creative tech company turning ideas into high-impact digital experiences. From websites to mobile apps, UI/UX, cloud setups, and AI — we cover it all. Whether you’re a startup or a scale-up, we’ve got your back. Ready to explore?",
+      "I'm Coral, Codeit's assistant! We're a tech company crafting websites, apps, UI/UX, cloud, marketing, and AI solutions.",
   },
   {
     patternCheckPrompt:
       "Is the user asking about services offered by Codeit? Examples: 'what services do you offer', 'what are the services', 'what do you do', 'services'.",
-    promptForReply:
-      "List Codeit’s services: web development, mobile apps, UI/UX design, cloud solutions, digital marketing, AI & ML. Ask what interests the user.",
+    promptForReply: "List Codeit’s services, max 20 words.",
     regex: /services|what do you offer|what are the services|what do you do/i,
     response:
-      "Here’s what we offer at Codeit:\n- Web Development: Custom websites & e-commerce\n- Mobile Apps: iOS & Android solutions\n- UI/UX Design: User-friendly interfaces\n- Cloud Solutions: Scalable infrastructure\n- Digital Marketing: SEO & social media\n- AI & ML: Smart automation\nWhat interests you?",
+      "Web development, mobile apps, UI/UX, cloud, digital marketing, AI/ML. What's your project?",
   },
   {
     patternCheckPrompt:
       "Is the user wanting to start a project or work with Codeit? Examples: 'start a project', 'work with you', 'i want to start a project'.",
-    promptForReply:
-      "Express excitement about starting a project and ask for the user’s name to begin the lead generation process.",
+    promptForReply: "Show excitement, ask for user’s name, max 20 words.",
     regex: /start a project|work with you|i want to start a project/i,
-    response:
-      "Excited to kick off a project? Please share your name to get started!",
+    response: "Thrilled to start? Please share your name to begin!",
     nextState: "lead_name",
   },
   {
     patternCheckPrompt:
       "Is the user wanting to schedule a meeting or book a call? Examples: 'schedule a meeting', 'book a call', 'schedule'.",
     promptForReply:
-      "Offer to set up a free 15-minute consultation and ask for a preferred day.",
+      "Offer a 15-min consultation, ask preferred day, max 20 words.",
     regex: /schedule|book a meeting|book a call/i,
-    response:
-      "Let’s set up a free 15-minute consultation! When’s a good day for you?",
+    response: "Free 15-min consultation? Pick a day that works!",
     nextState: "schedule_date",
   },
   {
     patternCheckPrompt:
       "Is the user asking for contact information? Examples: 'contact', 'reach out', 'phone', 'email', 'i want to contact'.",
-    promptForReply:
-      "Provide Codeit’s contact details: phone (+123-456-7890), email (contact@codeit.com), WhatsApp (+123-456-7890), LinkedIn (linkedin.com/company/codeit).",
+    promptForReply: "Provide Codeit’s contact details, max 20 words.",
     regex: /contact|reach out|phone|email|whatsapp|linkedin|i want to contact/i,
     response:
-      "Get in touch with us!\n- Phone: +123-456-7890\n- Email: contact@codeit.com\n- WhatsApp: +123-456-7890\n- LinkedIn: linkedin.com/company/codeit\nWe’re here to help!",
+      "Phone: +123-456-7890, Email: contact@codeit.com, WhatsApp: +123-456-7890, LinkedIn: linkedin.com/company/codeit",
   },
   {
     patternCheckPrompt:
       "Is the user asking how long a project takes? Examples: 'how long does a project take', 'project timeline'.",
     promptForReply:
-      "Explain that project timelines depend on scope, with typical web projects taking 4–12 weeks, and ask for specifics about their idea.",
+      "Explain project timelines vary, ask for details, max 20 words.",
     regex: /how long does a project take|project timeline/i,
-    response:
-      "Project timelines depend on scope. A typical web project takes 4–12 weeks. Want specifics for your idea?",
+    response: "Timelines vary, 4–12 weeks for web. What's your project idea?",
   },
   {
     patternCheckPrompt:
       "Is the user asking if Codeit works with startups? Examples: 'do you work with startups', 'startups'.",
     promptForReply:
-      "Confirm that Codeit loves working with startups and ask about their startup.",
+      "Confirm startup support, ask about their startup, max 20 words.",
     regex: /do you work with startups|startups/i,
     response:
-      "Absolutely, we love startups! We offer flexible solutions to fuel your growth. What’s your startup about?",
+      "We love startups! Flexible solutions for growth. What's your startup about?",
   },
   {
     patternCheckPrompt:
       "Is the user asking about industries Codeit works with? Examples: 'what industries', 'industries you serve'.",
-    promptForReply:
-      "State that Codeit works across tech, healthcare, e-commerce, and more, and ask about the user’s industry.",
+    promptForReply: "List industries, ask user’s industry, max 20 words.",
     regex: /what industries|industries you serve/i,
-    response:
-      "We work across tech, healthcare, e-commerce, and more. What’s your industry?",
+    response: "Tech, healthcare, e-commerce, more. What's your industry?",
   },
   {
     patternCheckPrompt:
       "Is the user asking about pricing? Examples: 'how much does it cost', 'pricing', 'cost'.",
     promptForReply:
-      "Explain that pricing depends on the project scope and suggest starting a project to get a quote.",
+      "Explain pricing varies, suggest starting project, max 20 words.",
     regex: /pricing|how much|cost/i,
-    response:
-      "Pricing depends on your project’s scope. Let’s start a project to get you a tailored quote!",
+    response: "Pricing varies by scope. Start a project for a quote!",
     nextState: "lead_name",
   },
   {
     patternCheckPrompt:
-      "Is the user asking for a tech joke? Examples: 'tell me a tech joke', 'tech joke', 'joke'.",
-    promptForReply: "Share a random tech joke in a fun, engaging tone.",
+      "Is the user asking for a joke? Examples: 'tell me a joke', 'tech joke', 'joke'.",
+    promptForReply:
+      "Generate a random joke about web development, coding, or the world, max 20 words.",
     regex: /tell me a joke|tech joke|joke/i,
-    responses: [
-      "Why do programmers prefer dark mode? Because light attracts bugs!",
-      "Why did the developer go broke? Because he used up all his cache!",
-      "Why was the computer cold? It left its Windows open!",
-    ],
-    getResponse: function () {
-      return this.responses[Math.floor(Math.random() * this.responses.length)];
-    },
   },
   {
     patternCheckPrompt:
       "Is the user asking for startup advice? Examples: 'startup advice', 'give me advice', 'advice for startups'.",
-    promptForReply:
-      "Provide concise, actionable startup advice in a friendly tone.",
+    promptForReply: "Give concise startup advice, max 20 words.",
     regex: /startup advice|give me advice|advice for startups/i,
     responses: [
-      "Start small, build fast, learn faster.",
-      "Solve a real pain point, not just a cool idea.",
-      "Your first version won’t be perfect — launch anyway.",
+      "Start small, build fast, learn quickly.",
+      "Solve real problems, not just cool ideas.",
+      "Launch imperfectly, improve fast.",
     ],
     getResponse: function () {
       return this.responses[Math.floor(Math.random() * this.responses.length)];
@@ -171,23 +144,20 @@ export async function handleCohereRequest({ message, sessionId }) {
   );
 
   const systemPrompt =
-    "You are Coral, the friendly, helpful, human-sounding chatbot working at *Codeit*, a modern tech company. You are never robotic, overly formal, or emotionless. Never say you're an AI or language model. You are Codeit’s virtual assistant and team member. Be professional but chill, confident, and human-like in tone.";
+    "You are Coral, Codeit’s friendly assistant. Be professional, human-like, max 20 words unless about company.";
 
-  // Initialize session if not exists
   if (!sessions[sessionId]) {
     sessions[sessionId] = { state: "idle", data: {}, history: [] };
   }
   const session = sessions[sessionId];
   const msg = message.event === "WELCOME" ? "" : message.trim().toLowerCase();
 
-  // Return service menu for WELCOME event
   if (message.event === "WELCOME") {
     return {
       response: "SERVICE_MENU",
     };
   }
 
-  // Handle Service Navigator (exact match for menu buttons)
   const serviceKey = Object.keys(serviceNavigator).find((key) =>
     msg.includes(key)
   );
@@ -195,53 +165,45 @@ export async function handleCohereRequest({ message, sessionId }) {
     return { response: serviceNavigator[serviceKey].response };
   }
 
-  // Lead Generation Flow
   if (session.state.startsWith("lead_")) {
     if (session.state === "lead_name") {
       session.data.name = message;
       session.state = "lead_contact";
-      return { response: "Awesome! What’s your email or phone number?" };
+      return { response: "Great! What's your email or phone?" };
     } else if (session.state === "lead_contact") {
       session.data.contact = message;
       session.state = "lead_project";
-      return { response: "Cool! What kind of project are you thinking about?" };
+      return { response: "Nice! What's your project about?" };
     } else if (session.state === "lead_project") {
       session.data.project = message;
       session.state = "lead_budget";
-      return { response: "Nice! What’s your estimated budget? (Optional)" };
+      return { response: "Cool! Estimated budget? (Optional)" };
     } else if (session.state === "lead_budget") {
       session.data.budget = message || "Not provided";
       session.state = "lead_timeline";
-      return { response: "Got it! What’s your timeline or urgency?" };
+      return { response: "Got it! What's your timeline?" };
     } else if (session.state === "lead_timeline") {
       session.data.timeline = message;
       console.log("Lead collected:", session.data);
-      // TODO: Integrate with CRM or Google Sheet here
       session.state = "idle";
-      return { response: "Thanks! Our team will reach out soon." };
+      return { response: "Thanks! We'll reach out soon." };
     }
   }
 
-  // Meeting Scheduler Flow
   if (session.state.startsWith("schedule_")) {
     if (session.state === "schedule_date") {
       session.data.date = message;
       session.state = "schedule_time";
-      return { response: "Great! What time works for you?" };
+      return { response: "Great! What time works?" };
     } else if (session.state === "schedule_time") {
       session.data.time = message;
       console.log("Meeting scheduled:", session.data);
-      // TODO: Integrate with calendar API here
       session.state = "idle";
-      return {
-        response: "You're all set! We'll follow up to confirm the details.",
-      };
+      return { response: "All set! We'll confirm soon." };
     }
   }
 
-  // Intent Detection with Cohere AI
   try {
-    // Prepare intent classification prompt
     const intentPrompt = `Classify the user's intent based on their message: "${message}".\nPossible intents and their detection prompts:\n${intents
       .map(
         (intent, index) => `${index + 1}. Intent: ${intent.patternCheckPrompt}`
@@ -262,11 +224,28 @@ export async function handleCohereRequest({ message, sessionId }) {
     if (intentIndex >= 0 && intentIndex < intents.length) {
       const intent = intents[intentIndex];
 
-      // Use regex as fallback for critical flows
       if (intent.regex && intent.regex.test(msg)) {
         if (intent.nextState) {
           session.state = intent.nextState;
         }
+        // For joke intent, rely on Cohere API instead of predefined responses
+        if (intent.patternCheckPrompt.includes("joke")) {
+          const response = await cohere.chat({
+            model: "command-r-plus",
+            message: intent.promptForReply,
+            temperature: 0.7,
+            max_tokens: 20,
+            chatHistory: [
+              { role: "SYSTEM", message: systemPrompt },
+              { role: "USER", message },
+            ],
+          });
+
+          if (!response.text) throw new Error("Cohere returned no text");
+
+          return { response: response.text.trim() };
+        }
+
         return {
           response: intent.getResponse
             ? intent.getResponse(msg)
@@ -274,12 +253,11 @@ export async function handleCohereRequest({ message, sessionId }) {
         };
       }
 
-      // Use Cohere for response generation
       const response = await cohere.chat({
         model: "command-r-plus",
         message: intent.promptForReply,
         temperature: 0.7,
-        max_tokens: 150,
+        max_tokens: 20,
         chatHistory: [
           { role: "SYSTEM", message: systemPrompt },
           { role: "USER", message },
@@ -295,13 +273,11 @@ export async function handleCohereRequest({ message, sessionId }) {
       return { response: response.text.trim() };
     }
 
-    // Fallback response
     return {
-      response:
-        "Hmm, not sure I got that. Try asking about our services, starting a project, or booking a call!",
+      response: "Not sure? Ask about services, contact, or schedule a call!",
     };
   } catch (error) {
     console.error("Cohere error:", error);
-    return { response: "Oops, something broke! 😕 Try again?" };
+    return { response: "Oops, something broke! Try again?" };
   }
 }
