@@ -141,6 +141,7 @@ const Chatbot = () => {
       setTimeout(() => setIsExpanded(false), 300);
     }
   };
+
   // Send message to server
   const sendMessage = async (text, msgSessionId = sessionId) => {
     setIsLoading(true);
@@ -195,6 +196,27 @@ const Chatbot = () => {
     e.preventDefault();
     setIsResizing(direction);
   };
+
+  // Handle service button click
+  const handleServiceClick = async (service) => {
+    const serviceKey = service
+      .split(":")[0]
+      .trim()
+      .toLowerCase()
+      .replace(" & ", " and ");
+    setMessages((prev) => [...prev, { text: service, sender: "user" }]);
+    await sendMessage(serviceKey);
+  };
+
+  // Service options for the menu
+  const serviceOptions = [
+    "Web Development: Custom websites & e-commerce",
+    "Mobile Apps: iOS & Android solutions",
+    "UI/UX Design: User-friendly interfaces",
+    "Cloud Solutions: Scalable infrastructure",
+    "Digital Marketing: SEO & social media",
+    "AI & ML: Smart automation",
+  ];
 
   return (
     <>
@@ -291,17 +313,25 @@ const Chatbot = () => {
               ref={messagesContainerRef}
               className="p-4 text-gray-800 flex-grow overflow-y-auto border-b border-sky-100 text-sm"
             >
-              {messages.length === 0 && !isLoading && (
-                <div className="flex flex-col items-center justify-center h-full text-center text-gray-600  rounded-lg p-6">
-                  <p className="text-lg font-semibold mb-2">
-                    Welcome to CodeIt! 🌟
-                  </p>
-                  <p className="text-sm whitespace-pre-wrap">
-                    I am your guide through this! 💻{"\n"}Start chatting to
-                    explore our services or get in touch! 😊
-                  </p>
+              {/* Persistent Service Menu */}
+              <div className="flex flex-col items-center text-center text-gray-600 rounded-lg p-4 bg-sky-50 mb-4">
+                <p className="text-lg font-semibold mb-4">
+                  What can I help you with? 🌟
+                </p>
+                <div className="grid grid-cols-1 gap-2 w-full max-w-xs">
+                  {serviceOptions.map((service, index) => (
+                    <button
+                      key={index}
+                      onClick={() => handleServiceClick(service)}
+                      className="bg-sky-100 hover:bg-sky-200 text-sky-800 px-4 py-2 rounded-lg text-left text-sm transition"
+                    >
+                      {service}
+                    </button>
+                  ))}
                 </div>
-              )}
+              </div>
+
+              {/* Message History */}
               {messages.map((msg, index) => (
                 <div
                   key={index}
