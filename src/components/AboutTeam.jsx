@@ -104,13 +104,15 @@ const AboutTeam = () => {
                 }}
               >
                 <div className="h-[40%] flex items-center justify-center">
-                  <motion.img
-                    src={member.image}
-                    alt={member.name}
-                    className="w-36 h-36 sm:w-48 sm:h-48 object-cover rounded-full mb-4"
-                    whileHover={{ scale: 1.05 }}
-                    transition={{ duration: 0.3 }}
-                  />
+                  <div className="w-36 h-36 sm:w-48 sm:h-48 rounded-full overflow-hidden mb-4">
+                    <motion.img
+                      src={member.image}
+                      alt={member.name}
+                      className="w-full h-full object-cover"
+                      whileHover={{ scale: 1.1 }}
+                      transition={{ duration: 0.2 }}
+                    />
+                  </div>
                 </div>
                 <div className="h-[10%] text-lg sm:text-xl font-semibold text-center">
                   {member.name}
